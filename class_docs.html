@@ -1,0 +1,798 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>KalmanFilter &mdash; kalman 0.9.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="kalman 0.9.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">kalman 0.9.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="kalmanfilter">
+<h1><a class="reference internal" href="index.html#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a><a class="headerlink" href="#kalmanfilter" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="kalman.KalmanFilter">
+<em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">KalmanFilter</tt><big>(</big><em>transition_matrices=None, observation_matrices=None, transition_covariance=None, observation_covariance=None, transition_offsets=None, observation_offsets=None, initial_state_mean=None, initial_state_covariance=None, random_state=None, em_vars=['transition_covariance', 'observation_covariance', 'initial_state_mean', 'initial_state_covariance'], n_dim_state=None, n_dim_obs=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the Kalman Filter, Kalman Smoother, and EM algorithm.</p>
+<p>This class implements the Kalman Filter, Kalman Smoother, and EM Algorithm
+for a Linear Gaussian model specified by,</p>
+<div class="math">
+<p><img src="_images/math/0acb86420c5b68be3fba508e5d40bb20110c31d0.png" alt="x_{t+1}   &amp;= A_{t} x_{t} + b_{t} + \text{Normal}(0, Q_{t}) \\
+z_{t}     &amp;= C_{t} x_{t} + d_{t} + \text{Normal}(0, R_{t})"/></p>
+</div><p>The Kalman Filter is an algorithm designed to estimate
+<img class="math" src="_images/math/71365d1512fa75e09e5b14fb09ce5f56778a601b.png" alt="P(x_t | z_{0:t})"/>.  As all state transitions and observations are
+linear with Gaussian distributed noise, these distributions can be
+represented exactly as Gaussian distributions with mean <cite>mu_filt[t]</cite> and
+covariances <cite>sigma_filt[t]</cite>.</p>
+<p>Similarly, the Kalman Smoother is an algorithm designed to estimate
+<img class="math" src="_images/math/223c6c8c7f0ef1c8476d6e05dd1e43973b09d02a.png" alt="P(x_t | z_{0:T-1})"/>.</p>
+<p>The EM algorithm aims to find for
+<img class="math" src="_images/math/65b5ab1ced3ea482e113bb31448f82865ff0c559.png" alt="\theta = (A, b, C, d, Q, R, \mu_0, \Sigma_0)"/></p>
+<div class="math">
+<p><img src="_images/math/a63de642c7dd6d260301cc0944941354cf4d0357.png" alt="\max_{\theta} P(z_{0:T-1}; \theta)"/></p>
+</div><p>If we define <img class="math" src="_images/math/628c6b18d781e442b61f29ce34cc7cdfa667af43.png" alt="L(x_{0:t},\theta) = \log P(z_{0:T-1}, x_{0:T-1};
+\theta)"/>, then the EM algorithm works by iteratively finding,</p>
+<div class="math">
+<p><img src="_images/math/cc1644290606e37e33de53fea3314f53554963b0.png" alt="P(x_{0:T-1} | z_{0:T-1}, \theta_i)"/></p>
+</div><p>then by maximizing,</p>
+<div class="math">
+<p><img src="_images/math/1cdba913501d3085ed8e4d09cb84f70d2bfa2ad1.png" alt="\theta_{i+1} = \arg\max_{\theta}
+    \mathbb{E}_{x_{0:T-1}} [
+        L(x_{0:t}, \theta)| z_{0:T-1}, \theta_i
+    ]"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>transition_matrices</strong> : [n_timesteps-1, n_dim_state, n_dim_state] or     [n_dim_state,n_dim_state] array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.  state transition matrix between times t and
+t+1 for t in [0...n_timesteps-2]</p>
+</div></blockquote>
+<p><strong>observation_matrices</strong> : [n_timesteps, n_dim_obs, n_dim_obs] or [n_dim_obs,     n_dim_obs] array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>.  observation matrix for times
+[0...n_timesteps-1]</p>
+</div></blockquote>
+<p><strong>transition_covariance</strong> : [n_dim_state, n_dim_state] array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/>.  state transition covariance matrix for times
+[0...n_timesteps-2]</p>
+</div></blockquote>
+<p><strong>observation_covariance</strong> : [n_dim_obs, n_dim_obs] array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/>.  observation covariance matrix for times
+[0...n_timesteps-1]</p>
+</div></blockquote>
+<p><strong>transition_offsets</strong> : [n_timesteps-1, n_dim_state] or [n_dim_state]     array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/>.  state offsets for times [0...n_timesteps-2]</p>
+</div></blockquote>
+<p><strong>observation_offsets</strong> : [n_timesteps, n_dim_obs] or [n_dim_obs] array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>.  observation offset for times
+[0...n_timesteps-1]</p>
+</div></blockquote>
+<p><strong>initial_state_mean</strong> : [n_dim_state] array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/7548319dd93c27598143e27cd09522e0c727ef4f.png" alt="\mu_0"/>. mean of initial state distribution</p>
+</div></blockquote>
+<p><strong>initial_state_covariance</strong> : [n_dim_state, n_dim_state] array-like</p>
+<blockquote>
+<div><p>Also known as <img class="math" src="_images/math/dcb56c9df837b86187e9c66311089e2e08be8308.png" alt="\Sigma_0"/>.  covariance of initial state
+distribution</p>
+</div></blockquote>
+<p><strong>random_state</strong> : optional, numpy random state</p>
+<blockquote>
+<div><p>random number generator used in sampling</p>
+</div></blockquote>
+<p><strong>em_vars</strong> : optional, subset of [&#8216;transition_matrices&#8217;,     &#8216;observation_matrices&#8217;, &#8216;transition_offsets&#8217;, &#8216;observation_offsets&#8217;,     &#8216;transition_covariance&#8217;, &#8216;observation_covariance&#8217;, &#8216;initial_state_mean&#8217;,     &#8216;initial_state_covariance&#8217;] or &#8216;all&#8217;</p>
+<blockquote>
+<div><p>if <cite>em_vars</cite> is an iterable of strings only variables in <cite>em_vars</cite>
+will be estimated using EM.  if <cite>em_vars</cite> == &#8216;all&#8217;, then all
+variables will be estimated.</p>
+</div></blockquote>
+<p><strong>n_dim_state: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the state space. Only meaningful when you do not
+specify initial values for <cite>transition_matrices</cite>, <cite>transition_offsets</cite>,
+<cite>transition_covariance</cite>, <cite>initial_state_mean</cite>, or
+<cite>initial_state_covariance</cite>.</p>
+</div></blockquote>
+<p><strong>n_dim_obs: optional, integer</strong> :</p>
+<blockquote class="last">
+<div><p>the dimensionality of the observation space. Only meaningful when you
+do not specify initial values for <cite>observation_matrices</cite>,
+<cite>observation_offsets</cite>, or <cite>observation_covariance</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.em" title="kalman.KalmanFilter.em"><tt class="xref py py-obj docutils literal"><span class="pre">em</span></tt></a>(X[,&nbsp;y,&nbsp;n_iter,&nbsp;em_vars])</td>
+<td>Apply the EM algorithm</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.filter" title="kalman.KalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(X)</td>
+<td>Apply the Kalman Filter</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.filter_update" title="kalman.KalmanFilter.filter_update"><tt class="xref py py-obj docutils literal"><span class="pre">filter_update</span></tt></a>(filtered_state_mean,&nbsp;...[,&nbsp;...])</td>
+<td>Update a Kalman Filter state estimate</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.sample" title="kalman.KalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(n_timesteps[,&nbsp;initial_state,&nbsp;...])</td>
+<td>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in length.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.score" title="kalman.KalmanFilter.score"><tt class="xref py py-obj docutils literal"><span class="pre">score</span></tt></a>(X)</td>
+<td>Calculate the log likelihood of all observations</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.smooth" title="kalman.KalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(X)</td>
+<td>Apply the Kalman Smoother</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="kalman.KalmanFilter.em">
+<tt class="descname">em</tt><big>(</big><em>X</em>, <em>y=None</em>, <em>n_iter=10</em>, <em>em_vars=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.em" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the EM algorithm</p>
+<p>Apply the EM algorithm to estimate all parameters specified by
+<cite>em_vars</cite>.  Note that all variables estimated are assumed to be
+constant for all time.  See <tt class="xref py py-func docutils literal"><span class="pre">_em()</span></tt> for details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array-like</p>
+<blockquote>
+<div><p>observations corresponding to times [0...n_timesteps-1].  If <cite>X</cite> is
+a masked array and any of <cite>X[t]</cite>&#8216;s components is masked, then
+<cite>X[t]</cite> will be treated as a missing observation.</p>
+</div></blockquote>
+<p><strong>n_iter</strong> : int, optional</p>
+<blockquote>
+<div><p>number of EM iterations to perform</p>
+</div></blockquote>
+<p><strong>em_vars</strong> : iterable of strings or &#8216;all&#8217;</p>
+<blockquote class="last">
+<div><p>variables to perform EM over.  Any variable not appearing here is
+left untouched.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.KalmanFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the Kalman Filter</p>
+<p>Apply the Kalman Filter to estimate the hidden state at time <img class="math" src="_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/>
+for <img class="math" src="_images/math/6f7b86ed150ff57b9ae1aaebaaedb1fd871a134f.png" alt="t = [0...n_{\text{timesteps}}-1]"/> given observations up to
+and including time <cite>t</cite>.  Observations are assumed to correspond to
+times <img class="math" src="_images/math/01e323847af3dc5620c7d16eb6d1c949c4e54bf9.png" alt="[0...n_{\text{timesteps}}-1]"/>.  The output of this method
+corresponding to time <img class="math" src="_images/math/886203f0d63798f1e50acd1c1162d0a89aa55e85.png" alt="n_{\text{timesteps}}-1"/> can be used in
+<a class="reference internal" href="index.html#kalman.KalmanFilter.filter_update" title="kalman.KalmanFilter.filter_update"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter_update()</span></tt></a> for online updating.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array-like</p>
+<blockquote>
+<div><p>observations corresponding to times [0...n_timesteps-1].  If <cite>X</cite> is
+a masked array and any of <cite>X[t]</cite> is masked, then <cite>X[t]</cite> will be
+treated as a missing observation.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>filtered_state_means</strong> : [n_timesteps, n_dim_state]</p>
+<blockquote>
+<div><p>mean of hidden state distributions for times [0...n_timesteps-1]
+given observations up to and including the current time step</p>
+</div></blockquote>
+<p><strong>filtered_state_covariances</strong> : [n_timesteps, n_dim_state, n_dim_state]         array</p>
+<blockquote class="last">
+<div><p>covariance matrix of hidden state distributions for times
+[0...n_timesteps-1] given observations up to and including the
+current time step</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.KalmanFilter.filter_update">
+<tt class="descname">filter_update</tt><big>(</big><em>filtered_state_mean</em>, <em>filtered_state_covariance</em>, <em>observation=None</em>, <em>transition_matrix=None</em>, <em>transition_offset=None</em>, <em>transition_covariance=None</em>, <em>observation_matrix=None</em>, <em>observation_offset=None</em>, <em>observation_covariance=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.filter_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a Kalman Filter state estimate</p>
+<p>Perform a one-step update to estimate the state at time <img class="math" src="_images/math/6698e583d6d03ec099c12e35add2e895252c49dd.png" alt="t+1"/>
+give an observation at time <img class="math" src="_images/math/6698e583d6d03ec099c12e35add2e895252c49dd.png" alt="t+1"/> and the previous estimate for
+time <img class="math" src="_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> given observations from times <img class="math" src="_images/math/140e7dce824363846a48ef0b20cd48df4b99a567.png" alt="[0...t]"/>.  This
+method is useful if one wants to track an object with streaming
+observations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filtered_state_mean</strong> : [n_dim_state] array</p>
+<blockquote>
+<div><p>mean estimate for state at time t given observations from times
+[1...t]</p>
+</div></blockquote>
+<p><strong>filtered_state_covariance</strong> : [n_dim_state, n_dim_state] array</p>
+<blockquote>
+<div><p>covariance of estimate for state at time t given observations from
+times [1...t]</p>
+</div></blockquote>
+<p><strong>observation</strong> : [n_dim_obs] array or None</p>
+<blockquote>
+<div><p>observation from time t+1.  If <cite>observation</cite> is a masked array and
+any of <cite>observation</cite>&#8216;s components are masked or if <cite>observation</cite> is
+None, then <cite>observation</cite> will be treated as a missing observation.</p>
+</div></blockquote>
+<p><strong>transition_matrix</strong> : optional, [n_dim_state, n_dim_state] array</p>
+<blockquote>
+<div><p>state transition matrix from time t to t+1.  If unspecified,
+<cite>self.transition_matrices</cite> will be used.</p>
+</div></blockquote>
+<p><strong>transition_offset</strong> : optional, [n_dim_state] array</p>
+<blockquote>
+<div><p>state offset for transition from time t to t+1.  If unspecified,
+<cite>self.transition_offset</cite> will be used.</p>
+</div></blockquote>
+<p><strong>transition_covariance</strong> : optional, [n_dim_state, n_dim_state] array</p>
+<blockquote>
+<div><p>state transition covariance from time t to t+1.  If unspecified,
+<cite>self.transition_covariance</cite> will be used.</p>
+</div></blockquote>
+<p><strong>observation_matrix</strong> : optional, [n_dim_obs, n_dim_state] array</p>
+<blockquote>
+<div><p>observation matrix at time t+1.  If unspecified,
+<cite>self.observation_matrices</cite> will be used.</p>
+</div></blockquote>
+<p><strong>observation_offset</strong> : optional, [n_dim_obs] array</p>
+<blockquote>
+<div><p>observation offset at time t+1.  If unspecified,
+<cite>self.observation_offset</cite> will be used.</p>
+</div></blockquote>
+<p><strong>observation_covariance</strong> : optional, [n_dim_obs, n_dim_obs] array</p>
+<blockquote>
+<div><p>observation covariance at time t+1.  If unspecified,
+<cite>self.observation_covariance</cite> will be used.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>next_filtered_state_mean</strong> : [n_dim_state] array</p>
+<blockquote>
+<div><p>mean estimate for state at time t+1 given observations from times
+[1...t+1]</p>
+</div></blockquote>
+<p><strong>next_filtered_state_covariance</strong> : [n_dim_state, n_dim_state] array</p>
+<blockquote class="last">
+<div><p>covariance of estimate for state at time t+1 given observations
+from times [1...t+1]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.KalmanFilter.sample">
+<tt class="descname">sample</tt><big>(</big><em>n_timesteps</em>, <em>initial_state=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in
+length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>n_timesteps</strong> : int</p>
+<blockquote>
+<div><p>number of timesteps</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>states</strong> : [n_timesteps, n_dim_state] array</p>
+<blockquote>
+<div><p>hidden states corresponding to times [0...n_timesteps-1]</p>
+</div></blockquote>
+<p><strong>observations</strong> : [n_timesteps, n_dim_obs] array</p>
+<blockquote class="last">
+<div><p>observations corresponding to times [0...n_timesteps-1]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.KalmanFilter.score">
+<tt class="descname">score</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the log likelihood of all observations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array</p>
+<blockquote>
+<div><p>observations for time steps [0...n_timesteps-1]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>likelihood</strong> : float</p>
+<blockquote class="last">
+<div><p>likelihood of all observations</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.KalmanFilter.smooth">
+<tt class="descname">smooth</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the Kalman Smoother</p>
+<p>Apply the Kalman Smoother to estimate the hidden state at time
+<img class="math" src="_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> for <img class="math" src="_images/math/6f7b86ed150ff57b9ae1aaebaaedb1fd871a134f.png" alt="t = [0...n_{\text{timesteps}}-1]"/> given all
+observations.  See <tt class="xref py py-func docutils literal"><span class="pre">_smooth()</span></tt> for more complex output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array-like</p>
+<blockquote>
+<div><p>observations corresponding to times [0...n_timesteps-1].  If <cite>X</cite> is
+a masked array and any of <cite>X[t]</cite> is masked, then <cite>X[t]</cite> will be
+treated as a missing observation.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>smoothed_state_means</strong> : [n_timesteps, n_dim_state]</p>
+<blockquote>
+<div><p>mean of hidden state distributions for times [0...n_timesteps-1]
+given all observations</p>
+</div></blockquote>
+<p><strong>smoothed_state_covariances</strong> : [n_timesteps, n_dim_state]</p>
+<blockquote class="last">
+<div><p>covariances of hidden state distributions for times
+[0...n_timesteps-1] given all observations</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="unscentedkalmanfilter">
+<h1><a class="reference internal" href="index.html#kalman.UnscentedKalmanFilter" title="kalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#unscentedkalmanfilter" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="kalman.UnscentedKalmanFilter">
+<em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the General (aka Augmented) Unscented Kalman Filter governed
+by the following equations,</p>
+<div class="math">
+<p><img src="_images/math/fa9f931d2700772f97b54da1f426342b0c646cc2.png" alt="v_t       &amp;\sim \text{Normal}(0, Q)     \\
+w_t       &amp;\sim \text{Normal}(0, R)     \\
+x_{t+1}   &amp;= f_t(x_t, v_t)              \\
+z_{t}     &amp;= g_t(x_t, w_t)"/></p>
+</div><p>Notice that although the input noise to the state transition equation and
+the observation equation are both normally distributed, any non-linear
+transformation may be applied afterwards.  This allows for greater
+generality, but at the expense of computational complexity.  The complexity
+of <a class="reference internal" href="index.html#kalman.UnscentedKalmanFilter.filter" title="kalman.UnscentedKalmanFilter.filter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter.filter()</span></tt></a> is <img class="math" src="_images/math/a0004a7528f43bef140dbe75b2ef3c4c8d595cdd.png" alt="O(T(2n+m)^3)"/>
+where <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the number of time steps, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the size of the
+state space, and <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is the size of the observation space.</p>
+<p>If your noise is simply additive, consider using the
+<a class="reference internal" href="index.html#kalman.AdditiveUnscentedKalmanFilter" title="kalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>f</strong> : function or [T-1] array of functions</p>
+<blockquote>
+<div><p>f[t] is a function of the state and the transition noise at time t and
+produces the state at time t+1</p>
+</div></blockquote>
+<p><strong>g</strong> : function or [T] array of functions</p>
+<blockquote>
+<div><p>g[t] is a function of the state and the observation noise at time t and
+produces the observation at time t.</p>
+</div></blockquote>
+<p><strong>Q</strong> : [n_dim_state, n_dim_state] array</p>
+<blockquote>
+<div><p>transition noise covariance matrix</p>
+</div></blockquote>
+<p><strong>R</strong> : [n_dim_obs, n_dim_obs] array</p>
+<blockquote>
+<div><p>observation noise covariance matrix</p>
+</div></blockquote>
+<p><strong>mu_0</strong> : [n_dim_state] array</p>
+<blockquote>
+<div><p>mean of initial state distribution</p>
+</div></blockquote>
+<p><strong>sigma_0</strong> : [n_dim_state, n_dim_state] array</p>
+<blockquote>
+<div><p>covariance of initial state distribution</p>
+</div></blockquote>
+<p><strong>random_state</strong> : optional, int or RandomState</p>
+<blockquote class="last">
+<div><p>seed for random sample generation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.UnscentedKalmanFilter.filter" title="kalman.UnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
+<td>Run Unscented Kalman Filter</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="index.html#kalman.UnscentedKalmanFilter.sample" title="kalman.UnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<td>Sample from model defined by the Unscented Kalman Filter</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.UnscentedKalmanFilter.smooth" title="kalman.UnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
+<td>Run Unscented Kalman Smoother</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="kalman.UnscentedKalmanFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run Unscented Kalman Filter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>Z</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>Z[t] = observation at time t.  If Z is a masked array and any of
+Z[t]&#8217;s elements are masked, the observation is assumed missing and
+ignored.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mu_filt</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>mu_filt[t] = mean of state distribution at time t given
+observations from times [0, t]</p>
+</div></blockquote>
+<p><strong>sigma_filt</strong> : [T, n_dim_state, n_dim_state] array</p>
+<blockquote class="last">
+<div><p>sigma_filt[t] = covariance of state distribution at time t given
+observations from times [0, t]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.UnscentedKalmanFilter.sample">
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample from model defined by the Unscented Kalman Filter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>T</strong> : int</p>
+<blockquote>
+<div><p>number of time steps</p>
+</div></blockquote>
+<p><strong>x_0</strong> : optional, [n_dim_state] array</p>
+<blockquote class="last">
+<div><p>initial state.  If unspecified, will be sampled from initial state
+distribution.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.UnscentedKalmanFilter.smooth">
+<tt class="descname">smooth</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run Unscented Kalman Smoother</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>Z</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>Z[t] = observation at time t.  If Z is a masked array and any of
+Z[t]&#8217;s elements are masked, the observation is assumed missing and
+ignored.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mu_smooth</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>mu_filt[t] = mean of state distribution at time t given
+observations from times [0, T-1]</p>
+</div></blockquote>
+<p><strong>sigma_smooth</strong> : [T, n_dim_state, n_dim_state] array</p>
+<blockquote class="last">
+<div><p>sigma_filt[t] = covariance of state distribution at time t given
+observations from times [0, T-1]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="additiveunscentedkalmanfilter">
+<h1><a class="reference internal" href="index.html#kalman.AdditiveUnscentedKalmanFilter" title="kalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#additiveunscentedkalmanfilter" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="kalman.AdditiveUnscentedKalmanFilter">
+<em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the Unscented Kalman Filter with additive noise.
+Observations are assumed to be generated from the following process,</p>
+<div class="math">
+<p><img src="_images/math/0741fd6adfcc898bf810cc68e31767e07d781476.png" alt="v_t       &amp;\sim \text{Normal}(0, Q)     \\
+w_t       &amp;\sim \text{Normal}(0, R)     \\
+x_{t+1}   &amp;= f_t(x_t) + v_t             \\
+z_{t}     &amp;= g_t(x_t) + w_t"/></p>
+</div><p>While less general the general-noise Unscented Kalman Filter, the Additive
+version is more computationally efficient with complexity <img class="math" src="_images/math/2c2c6395ae022d7e6ac9bc6af9b7969e619ca9c7.png" alt="O(Tn^3)"/>
+where <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the number of time steps and <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the size of
+the state space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>f</strong> : function or [T-1] array of functions</p>
+<blockquote>
+<div><p>f[t] is a function of the state at time t and produces the state at
+time t+1</p>
+</div></blockquote>
+<p><strong>g</strong> : function or [T] array of functions</p>
+<blockquote>
+<div><p>g[t] is a function of the state at time t and produces the observation
+at time t</p>
+</div></blockquote>
+<p><strong>Q</strong> : [n_dim_state, n_dim_state] array</p>
+<blockquote>
+<div><p>transition noise covariance matrix</p>
+</div></blockquote>
+<p><strong>R</strong> : [n_dim_obs, n_dim_obs] array</p>
+<blockquote>
+<div><p>observation noise covariance matrix</p>
+</div></blockquote>
+<p><strong>mu_0</strong> : [n_dim_state] array</p>
+<blockquote>
+<div><p>mean of initial state distribution</p>
+</div></blockquote>
+<p><strong>sigma_0</strong> : [n_dim_state, n_dim_state] array</p>
+<blockquote>
+<div><p>covariance of initial state distribution</p>
+</div></blockquote>
+<p><strong>random_state</strong> : optional, int or RandomState</p>
+<blockquote class="last">
+<div><p>seed for random sample generation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.AdditiveUnscentedKalmanFilter.filter" title="kalman.AdditiveUnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
+<td>Run Unscented Kalman Filter</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="index.html#kalman.AdditiveUnscentedKalmanFilter.sample" title="kalman.AdditiveUnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<td>Sample from model defined by the Unscented Kalman Filter</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.AdditiveUnscentedKalmanFilter.smooth" title="kalman.AdditiveUnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
+<td>Run Unscented Kalman Smoother</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="kalman.AdditiveUnscentedKalmanFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run Unscented Kalman Filter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>Z</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>Z[t] = observation at time t.  If Z is a masked array and any of
+Z[t]&#8217;s elements are masked, the observation is assumed missing and
+ignored.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mu_filt</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>mu_filt[t] = mean of state distribution at time t given
+observations from times [0, t]</p>
+</div></blockquote>
+<p><strong>sigma_filt</strong> : [T, n_dim_state, n_dim_state] array</p>
+<blockquote class="last">
+<div><p>sigma_filt[t] = covariance of state distribution at time t given
+observations from times [0, t]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.AdditiveUnscentedKalmanFilter.sample">
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample from model defined by the Unscented Kalman Filter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>T</strong> : int</p>
+<blockquote>
+<div><p>number of time steps</p>
+</div></blockquote>
+<p><strong>x_0</strong> : optional, [n_dim_state] array</p>
+<blockquote class="last">
+<div><p>initial state.  If unspecified, will be sampled from initial state
+distribution.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kalman.AdditiveUnscentedKalmanFilter.smooth">
+<tt class="descname">smooth</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run Unscented Kalman Smoother</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>Z</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>Z[t] = observation at time t.  If Z is a masked array and any of
+Z[t]&#8217;s elements are masked, the observation is assumed missing and
+ignored.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>mu_smooth</strong> : [T, n_dim_state] array</p>
+<blockquote>
+<div><p>mu_filt[t] = mean of state distribution at time t given
+observations from times [0, T-1]</p>
+</div></blockquote>
+<p><strong>sigma_smooth</strong> : [T, n_dim_state, n_dim_state] array</p>
+<blockquote class="last">
+<div><p>sigma_filt[t] = covariance of state distribution at time t given
+observations from times [0, T-1]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">KalmanFilter</span></tt></a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#unscentedkalmanfilter"><tt class="docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#additiveunscentedkalmanfilter"><tt class="docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><ul>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/class_docs.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">kalman 0.9.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Daniel Duckworth.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
