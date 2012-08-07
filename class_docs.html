@@ -57,15 +57,15 @@ z_{t}     &amp;= C_{t} x_{t} + d_{t} + \text{Normal}(0, R_{t})"/></p>
 </div><p>The Kalman Filter is an algorithm designed to estimate
 <img class="math" src="_images/math/71365d1512fa75e09e5b14fb09ce5f56778a601b.png" alt="P(x_t | z_{0:t})"/>.  As all state transitions and observations are
 linear with Gaussian distributed noise, these distributions can be
-represented exactly as Gaussian distributions with mean <cite>mu_filt[t]</cite> and
-covariances <cite>sigma_filt[t]</cite>.</p>
+represented exactly as Gaussian distributions with mean
+<cite>filtered_state_means[t]</cite> and covariances <cite>filtered_state_covariances[t]</cite>.</p>
 <p>Similarly, the Kalman Smoother is an algorithm designed to estimate
 <img class="math" src="_images/math/223c6c8c7f0ef1c8476d6e05dd1e43973b09d02a.png" alt="P(x_t | z_{0:T-1})"/>.</p>
 <p>The EM algorithm aims to find for
 <img class="math" src="_images/math/65b5ab1ced3ea482e113bb31448f82865ff0c559.png" alt="\theta = (A, b, C, d, Q, R, \mu_0, \Sigma_0)"/></p>
 <div class="math">
 <p><img src="_images/math/a63de642c7dd6d260301cc0944941354cf4d0357.png" alt="\max_{\theta} P(z_{0:T-1}; \theta)"/></p>
-</div><p>If we define <img class="math" src="_images/math/628c6b18d781e442b61f29ce34cc7cdfa667af43.png" alt="L(x_{0:t},\theta) = \log P(z_{0:T-1}, x_{0:T-1};
+</div><p>If we define <img class="math" src="_images/math/cbffcb2adbdf2a7340352e3e1ba44070011e9643.png" alt="L(x_{0:T-1},\theta) = \log P(z_{0:T-1}, x_{0:T-1};
 \theta)"/>, then the EM algorithm works by iteratively finding,</p>
 <div class="math">
 <p><img src="_images/math/cc1644290606e37e33de53fea3314f53554963b0.png" alt="P(x_{0:T-1} | z_{0:T-1}, \theta_i)"/></p>
@@ -160,11 +160,11 @@ do not specify initial values for <cite>observation_matrices</cite>,
 <tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.filter_update" title="kalman.KalmanFilter.filter_update"><tt class="xref py py-obj docutils literal"><span class="pre">filter_update</span></tt></a>(filtered_state_mean,&nbsp;...[,&nbsp;...])</td>
 <td>Update a Kalman Filter state estimate</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.sample" title="kalman.KalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(n_timesteps[,&nbsp;initial_state,&nbsp;...])</td>
-<td>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in length.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.score" title="kalman.KalmanFilter.score"><tt class="xref py py-obj docutils literal"><span class="pre">score</span></tt></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.loglikelihood" title="kalman.KalmanFilter.loglikelihood"><tt class="xref py py-obj docutils literal"><span class="pre">loglikelihood</span></tt></a>(X)</td>
 <td>Calculate the log likelihood of all observations</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.sample" title="kalman.KalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(n_timesteps[,&nbsp;initial_state,&nbsp;...])</td>
+<td>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in length.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="index.html#kalman.KalmanFilter.smooth" title="kalman.KalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(X)</td>
 <td>Apply the Kalman Smoother</td>
@@ -320,6 +320,30 @@ from times [1...t+1]</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="kalman.KalmanFilter.loglikelihood">
+<tt class="descname">loglikelihood</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.loglikelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the log likelihood of all observations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array</p>
+<blockquote>
+<div><p>observations for time steps [0...n_timesteps-1]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>likelihood</strong> : float</p>
+<blockquote class="last">
+<div><p>likelihood of all observations</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="kalman.KalmanFilter.sample">
 <tt class="descname">sample</tt><big>(</big><em>n_timesteps</em>, <em>initial_state=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in
@@ -341,30 +365,6 @@ length.</p>
 <p><strong>observations</strong> : [n_timesteps, n_dim_obs] array</p>
 <blockquote class="last">
 <div><p>observations corresponding to times [0...n_timesteps-1]</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="kalman.KalmanFilter.score">
-<tt class="descname">score</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the log likelihood of all observations</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array</p>
-<blockquote>
-<div><p>observations for time steps [0...n_timesteps-1]</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>likelihood</strong> : float</p>
-<blockquote class="last">
-<div><p>likelihood of all observations</p>
 </div></blockquote>
 </td>
 </tr>

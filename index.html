@@ -43,9 +43,9 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="kalman-filter">
-<h1>Kalman Filter<a class="headerlink" href="#kalman-filter" title="Permalink to this headline">¶</a></h1>
-<p>Welcome to <tt class="xref py py-mod docutils literal"><span class="pre">kalman</span></tt>, the dead-simple Kalman Filter, Kalman Smoother, and EM library for Python:</p>
+  <div class="section" id="id1">
+<h1><a class="reference external" href="https://github.com/pykalman/pykalman">Kalman Filter</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to <a class="reference external" href="https://github.com/pykalman/pykalman">kalman</a>, the dead-simple Kalman Filter, Kalman Smoother, and EM library for Python:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">kalman</span> <span class="kn">import</span> <span class="n">KalmanFilter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">KalmanFilter</span><span class="p">(</span><span class="n">transition_matrices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">observation_matrices</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
@@ -81,10 +81,10 @@
 <li><tt class="xref py py-mod docutils literal"><span class="pre">numpydoc</span></tt>  (for generating documentation)</li>
 <li><tt class="xref py py-mod docutils literal"><span class="pre">nose</span></tt>      (for running tests)</li>
 </ul>
-<p>All of these and <tt class="xref py py-mod docutils literal"><span class="pre">kalman</span></tt> can be installed using <cite>easy_install</cite>:</p>
+<p>All of these and <tt class="xref py py-mod docutils literal"><span class="pre">kalman</span></tt> can be installed using <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
 <div class="highlight-python"><pre>$ easy_install numpy scipy Sphinx numpydoc nose kalman</pre>
 </div>
-<p>Alternatively, you can get the latest and greatest from github:</p>
+<p>Alternatively, you can get the latest and greatest from <a class="reference external" href="https://github.com/pykalman/pykalman">github</a>:</p>
 <div class="highlight-python"><pre>$ git clone git@github.com:pykalman/pykalman.git kalman
 $ cd kalman
 $ sudo python setup.py install</pre>
@@ -173,18 +173,18 @@ is.</p>
    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
       <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">initial_state_mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">initial_state_covariance</span><span class="p">))</span>
       <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-          <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
-          <span class="o">+</span> <span class="n">observation_offsets</span>
+          <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+          <span class="o">+</span> <span class="n">observation_offsets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
           <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
       <span class="p">)</span>
   <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transition_matrices</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
-      <span class="o">+</span> <span class="n">transition_offsets</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transition_matrices</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+      <span class="o">+</span> <span class="n">transition_offsets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
       <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">transition_covariance</span><span class="p">))</span>
   <span class="p">)</span>
   <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-      <span class="o">+</span> <span class="n">observation_offsets</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+      <span class="o">+</span> <span class="n">observation_offsets</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
       <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
   <span class="p">)</span>
 </pre></div>
@@ -226,10 +226,10 @@ past ones at the same computational cost of <img class="math" src="_images/math/
 the number of time steps and <cite>d</cite> is the dimensionality of the state space. The
 only reason to prefer the Kalman Filter over the Smoother is in its ability to
 incorporate new measurements in an online manner:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span>
-<span class="n">next_mean</span><span class="p">,</span> <span class="n">next_covariance</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter_update</span><span class="p">(</span>
-    <span class="n">means</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">covariances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_measurement</span>
-<span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_mean</span><span class="p">,</span> <span class="n">next_covariance</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter_update</span><span class="p">(</span>
+<span class="go">    means[-1], covariances[-1], new_measurement</span>
+<span class="go">)</span>
 </pre></div>
 </div>
 <p>Both the Kalman Filter and Kalman Smoother are able to use parameters which
@@ -400,6 +400,8 @@ Linear Dynamical Systems.&#8221;
 </div>
 <div class="section" id="class-reference">
 <h2>Class Reference<a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="kalmanfilter">
+<h3><a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a><a class="headerlink" href="#kalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="kalman.KalmanFilter">
 <em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">KalmanFilter</tt><big>(</big><em>transition_matrices=None, observation_matrices=None, transition_covariance=None, observation_covariance=None, transition_offsets=None, observation_offsets=None, initial_state_mean=None, initial_state_covariance=None, random_state=None, em_vars=['transition_covariance', 'observation_covariance', 'initial_state_mean', 'initial_state_covariance'], n_dim_state=None, n_dim_obs=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter" title="Permalink to this definition">¶</a></dt>
@@ -412,15 +414,15 @@ z_{t}     &amp;= C_{t} x_{t} + d_{t} + \text{Normal}(0, R_{t})"/></p>
 </div><p>The Kalman Filter is an algorithm designed to estimate
 <img class="math" src="_images/math/71365d1512fa75e09e5b14fb09ce5f56778a601b.png" alt="P(x_t | z_{0:t})"/>.  As all state transitions and observations are
 linear with Gaussian distributed noise, these distributions can be
-represented exactly as Gaussian distributions with mean <cite>mu_filt[t]</cite> and
-covariances <cite>sigma_filt[t]</cite>.</p>
+represented exactly as Gaussian distributions with mean
+<cite>filtered_state_means[t]</cite> and covariances <cite>filtered_state_covariances[t]</cite>.</p>
 <p>Similarly, the Kalman Smoother is an algorithm designed to estimate
 <img class="math" src="_images/math/223c6c8c7f0ef1c8476d6e05dd1e43973b09d02a.png" alt="P(x_t | z_{0:T-1})"/>.</p>
 <p>The EM algorithm aims to find for
 <img class="math" src="_images/math/65b5ab1ced3ea482e113bb31448f82865ff0c559.png" alt="\theta = (A, b, C, d, Q, R, \mu_0, \Sigma_0)"/></p>
 <div class="math">
 <p><img src="_images/math/a63de642c7dd6d260301cc0944941354cf4d0357.png" alt="\max_{\theta} P(z_{0:T-1}; \theta)"/></p>
-</div><p>If we define <img class="math" src="_images/math/628c6b18d781e442b61f29ce34cc7cdfa667af43.png" alt="L(x_{0:t},\theta) = \log P(z_{0:T-1}, x_{0:T-1};
+</div><p>If we define <img class="math" src="_images/math/cbffcb2adbdf2a7340352e3e1ba44070011e9643.png" alt="L(x_{0:T-1},\theta) = \log P(z_{0:T-1}, x_{0:T-1};
 \theta)"/>, then the EM algorithm works by iteratively finding,</p>
 <div class="math">
 <p><img src="_images/math/cc1644290606e37e33de53fea3314f53554963b0.png" alt="P(x_{0:T-1} | z_{0:T-1}, \theta_i)"/></p>
@@ -515,11 +517,11 @@ do not specify initial values for <cite>observation_matrices</cite>,
 <tr class="row-odd"><td><a class="reference internal" href="#kalman.KalmanFilter.filter_update" title="kalman.KalmanFilter.filter_update"><tt class="xref py py-obj docutils literal"><span class="pre">filter_update</span></tt></a>(filtered_state_mean,&nbsp;...[,&nbsp;...])</td>
 <td>Update a Kalman Filter state estimate</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#kalman.KalmanFilter.sample" title="kalman.KalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(n_timesteps[,&nbsp;initial_state,&nbsp;...])</td>
-<td>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in length.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.KalmanFilter.score" title="kalman.KalmanFilter.score"><tt class="xref py py-obj docutils literal"><span class="pre">score</span></tt></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#kalman.KalmanFilter.loglikelihood" title="kalman.KalmanFilter.loglikelihood"><tt class="xref py py-obj docutils literal"><span class="pre">loglikelihood</span></tt></a>(X)</td>
 <td>Calculate the log likelihood of all observations</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kalman.KalmanFilter.sample" title="kalman.KalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(n_timesteps[,&nbsp;initial_state,&nbsp;...])</td>
+<td>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in length.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#kalman.KalmanFilter.smooth" title="kalman.KalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(X)</td>
 <td>Apply the Kalman Smoother</td>
@@ -675,6 +677,30 @@ from times [1...t+1]</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="kalman.KalmanFilter.loglikelihood">
+<tt class="descname">loglikelihood</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.loglikelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the log likelihood of all observations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array</p>
+<blockquote>
+<div><p>observations for time steps [0...n_timesteps-1]</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>likelihood</strong> : float</p>
+<blockquote class="last">
+<div><p>likelihood of all observations</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="kalman.KalmanFilter.sample">
 <tt class="descname">sample</tt><big>(</big><em>n_timesteps</em>, <em>initial_state=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in
@@ -696,30 +722,6 @@ length.</p>
 <p><strong>observations</strong> : [n_timesteps, n_dim_obs] array</p>
 <blockquote class="last">
 <div><p>observations corresponding to times [0...n_timesteps-1]</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="kalman.KalmanFilter.score">
-<tt class="descname">score</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the log likelihood of all observations</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : [n_timesteps, n_dim_obs] array</p>
-<blockquote>
-<div><p>observations for time steps [0...n_timesteps-1]</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>likelihood</strong> : float</p>
-<blockquote class="last">
-<div><p>likelihood of all observations</p>
 </div></blockquote>
 </td>
 </tr>
@@ -764,6 +766,9 @@ given all observations</p>
 
 </dd></dl>
 
+</div>
+<div class="section" id="unscentedkalmanfilter">
+<h3><a class="reference internal" href="#kalman.UnscentedKalmanFilter" title="kalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#unscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="kalman.UnscentedKalmanFilter">
 <em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
@@ -928,6 +933,9 @@ observations from times [0, T-1]</p>
 
 </dd></dl>
 
+</div>
+<div class="section" id="additiveunscentedkalmanfilter">
+<h3><a class="reference internal" href="#kalman.AdditiveUnscentedKalmanFilter" title="kalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#additiveunscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="kalman.AdditiveUnscentedKalmanFilter">
 <em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
@@ -1089,6 +1097,7 @@ observations from times [0, T-1]</p>
 
 </div>
 </div>
+</div>
 
 
           </div>
@@ -1112,6 +1121,15 @@ observations from times [0, T-1]</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#class-reference">Class Reference</a><ul>
+<li><a class="reference internal" href="#kalmanfilter"><tt class="docutils literal"><span class="pre">KalmanFilter</span></tt></a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#unscentedkalmanfilter"><tt class="docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#additiveunscentedkalmanfilter"><tt class="docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><ul>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

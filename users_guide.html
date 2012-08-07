@@ -124,18 +124,18 @@ is.</p>
    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
       <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">initial_state_mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">initial_state_covariance</span><span class="p">))</span>
       <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-          <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
-          <span class="o">+</span> <span class="n">observation_offsets</span>
+          <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+          <span class="o">+</span> <span class="n">observation_offsets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
           <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
       <span class="p">)</span>
   <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transition_matrices</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
-      <span class="o">+</span> <span class="n">transition_offsets</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transition_matrices</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+      <span class="o">+</span> <span class="n">transition_offsets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
       <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">transition_covariance</span><span class="p">))</span>
   <span class="p">)</span>
   <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-      <span class="o">+</span> <span class="n">observation_offsets</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+      <span class="o">+</span> <span class="n">observation_offsets</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
       <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
   <span class="p">)</span>
 </pre></div>
@@ -177,10 +177,10 @@ past ones at the same computational cost of <img class="math" src="_images/math/
 the number of time steps and <cite>d</cite> is the dimensionality of the state space. The
 only reason to prefer the Kalman Filter over the Smoother is in its ability to
 incorporate new measurements in an online manner:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span>
-<span class="n">next_mean</span><span class="p">,</span> <span class="n">next_covariance</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter_update</span><span class="p">(</span>
-    <span class="n">means</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">covariances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_measurement</span>
-<span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_mean</span><span class="p">,</span> <span class="n">next_covariance</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter_update</span><span class="p">(</span>
+<span class="go">    means[-1], covariances[-1], new_measurement</span>
+<span class="go">)</span>
 </pre></div>
 </div>
 <p>Both the Kalman Filter and Kalman Smoother are able to use parameters which

@@ -89,18 +89,18 @@ is.
        if t == 0:
           states[t] = norm.rvs(initial_state_mean, np.sqrt(initial_state_covariance))
           measurements[t] = (
-              np.dot(observation_matrices, states[t])
-              + observation_offsets
+              np.dot(observation_matrices[t], states[t])
+              + observation_offsets[t]
               + norm.rvs(0, np.sqrt(observation_covariance))
           )
       states[t+1] = (
-          np.dot(transition_matrices, states[t])
-          + transition_offsets
+          np.dot(transition_matrices[t], states[t])
+          + transition_offsets[t]
           + norm.rvs(0, np.sqrt(transition_covariance))
       )
       measurements[t+1] = (
-          np.dot(observation_matrices, states[t+1])
-          + observation_offsets
+          np.dot(observation_matrices[t+1], states[t+1])
+          + observation_offsets[t+1]
           + norm.rvs(np.sqrt(observation_covariance))
       )
 
@@ -148,8 +148,8 @@ the number of time steps and `d` is the dimensionality of the state space. The
 only reason to prefer the Kalman Filter over the Smoother is in its ability to
 incorporate new measurements in an online manner::
 
-    means, covariances = kf.filter(measurements)
-    next_mean, next_covariance = kf.filter_update(
+    >>> means, covariances = kf.filter(measurements)
+    >>> next_mean, next_covariance = kf.filter_update(
         means[-1], covariances[-1], new_measurement
     )
 

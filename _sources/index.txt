@@ -1,9 +1,9 @@
 
-=============
-Kalman Filter
-=============
+=======================================================
+`Kalman Filter <https://github.com/pykalman/pykalman>`_
+=======================================================
 
-Welcome to :mod:`kalman`, the dead-simple Kalman Filter, Kalman Smoother, and EM library for Python::
+Welcome to `kalman <https://github.com/pykalman/pykalman>`_, the dead-simple Kalman Filter, Kalman Smoother, and EM library for Python::
 
     >>> from kalman import KalmanFilter
     >>> import numpy as np
@@ -43,11 +43,12 @@ For a quick installation::
 * :mod:`numpydoc`  (for generating documentation)
 * :mod:`nose`      (for running tests)
 
-All of these and :mod:`kalman` can be installed using `easy_install`::
+All of these and :mod:`kalman` can be installed using ``easy_install``::
 
     $ easy_install numpy scipy Sphinx numpydoc nose kalman
 
-Alternatively, you can get the latest and greatest from github::
+Alternatively, you can get the latest and greatest from `github
+<https://github.com/pykalman/pykalman>`_::
 
     $ git clone git@github.com:pykalman/pykalman.git kalman
     $ cd kalman
