@@ -84,6 +84,11 @@
 <p>All of these and <tt class="xref py py-mod docutils literal"><span class="pre">kalman</span></tt> can be installed using <cite>easy_install</cite>:</p>
 <div class="highlight-python"><pre>$ easy_install numpy scipy Sphinx numpydoc nose kalman</pre>
 </div>
+<p>Alternatively, you can get the latest and greatest from github:</p>
+<div class="highlight-python"><pre>$ git clone git@github.com:pykalman/pykalman.git kalman
+$ cd kalman
+$ sudo python setup.py install</pre>
+</div>
 </div>
 <div class="section" id="user-s-guide">
 <h2>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
@@ -393,8 +398,8 @@ Linear Dynamical Systems.&#8221;
 </div>
 </div>
 </div>
-<div class="section" id="class-documentation">
-<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="class-reference">
+<h2>Class Reference<a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="kalman.KalmanFilter">
 <em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">KalmanFilter</tt><big>(</big><em>transition_matrices=None, observation_matrices=None, transition_covariance=None, observation_covariance=None, transition_offsets=None, observation_offsets=None, initial_state_mean=None, initial_state_covariance=None, random_state=None, em_vars=['transition_covariance', 'observation_covariance', 'initial_state_mean', 'initial_state_covariance'], n_dim_state=None, n_dim_obs=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter" title="Permalink to this definition">¶</a></dt>
@@ -1106,7 +1111,7 @@ observations from times [0, T-1]</p>
 <li><a class="reference internal" href="#mathematical-formulation">Mathematical Formulation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#class-documentation">Class Documentation</a><ul>
+<li><a class="reference internal" href="#class-reference">Class Reference</a><ul>
 </ul>
 </li>
 </ul>

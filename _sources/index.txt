@@ -47,6 +47,12 @@ All of these and :mod:`kalman` can be installed using `easy_install`::
 
     $ easy_install numpy scipy Sphinx numpydoc nose kalman
 
+Alternatively, you can get the latest and greatest from github::
+
+    $ git clone git@github.com:pykalman/pykalman.git kalman
+    $ cd kalman
+    $ sudo python setup.py install
+
 
 ------------
 User's Guide
@@ -54,8 +60,8 @@ User's Guide
 
 .. include:: users_guide.rst
 
--------------------
-Class Documentation
--------------------
+---------------
+Class Reference
+---------------
 
 .. include:: class_docs.rst
