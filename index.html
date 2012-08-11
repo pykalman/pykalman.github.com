@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Kalman Filter &mdash; kalman 0.9.0 documentation</title>
+    <title>pykalman &mdash; pykalman 0.9.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="kalman 0.9.0 documentation" href="#" /> 
+    <link rel="top" title="pykalman 0.9.0 documentation" href="#" /> 
   </head>
   <body>
     <div class="related">
@@ -34,7 +34,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="#">kalman 0.9.0 documentation</a> &raquo;</li> 
+        <li><a href="#">pykalman 0.9.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -44,9 +44,9 @@
           <div class="body">
             
   <div class="section" id="id1">
-<h1><a class="reference external" href="https://github.com/pykalman/pykalman">Kalman Filter</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<p>Welcome to <a class="reference external" href="https://github.com/pykalman/pykalman">kalman</a>, the dead-simple Kalman Filter, Kalman Smoother, and EM library for Python:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">kalman</span> <span class="kn">import</span> <span class="n">KalmanFilter</span>
+<h1><a class="reference external" href="https://github.com/pykalman/pykalman">pykalman</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to <a class="reference external" href="https://github.com/pykalman/pykalman">pykalman</a>, the dead-simple Kalman Filter, Kalman Smoother, and EM library for Python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pykalman</span> <span class="kn">import</span> <span class="n">KalmanFilter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">KalmanFilter</span><span class="p">(</span><span class="n">transition_matrices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">observation_matrices</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">measurements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>  <span class="c"># 3 observations</span>
@@ -71,9 +71,9 @@
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>For a quick installation:</p>
-<div class="highlight-python"><pre>$ easy_install kalman</pre>
+<div class="highlight-python"><pre>$ easy_install pykalman</pre>
 </div>
-<p><tt class="xref py py-mod docutils literal"><span class="pre">kalman</span></tt> depends on the following modules,</p>
+<p><tt class="xref py py-mod docutils literal"><span class="pre">pykalman</span></tt> depends on the following modules,</p>
 <ul class="simple">
 <li><tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt>     (for core functionality)</li>
 <li><tt class="xref py py-mod docutils literal"><span class="pre">scipy</span></tt>     (for core functionality)</li>
@@ -81,12 +81,12 @@
 <li><tt class="xref py py-mod docutils literal"><span class="pre">numpydoc</span></tt>  (for generating documentation)</li>
 <li><tt class="xref py py-mod docutils literal"><span class="pre">nose</span></tt>      (for running tests)</li>
 </ul>
-<p>All of these and <tt class="xref py py-mod docutils literal"><span class="pre">kalman</span></tt> can be installed using <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
-<div class="highlight-python"><pre>$ easy_install numpy scipy Sphinx numpydoc nose kalman</pre>
+<p>All of these and <tt class="xref py py-mod docutils literal"><span class="pre">pykalman</span></tt> can be installed using <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<div class="highlight-python"><pre>$ easy_install numpy scipy Sphinx numpydoc nose pykalman</pre>
 </div>
 <p>Alternatively, you can get the latest and greatest from <a class="reference external" href="https://github.com/pykalman/pykalman">github</a>:</p>
-<div class="highlight-python"><pre>$ git clone git@github.com:pykalman/pykalman.git kalman
-$ cd kalman
+<div class="highlight-python"><pre>$ git clone git@github.com:pykalman/pykalman.git pykalman
+$ cd pykalman
 $ sudo python setup.py install</pre>
 </div>
 </div>
@@ -118,19 +118,19 @@ state estimation in robotics.</p>
 Kalman Smoother.  In addition, model parameters which are traditionally
 specified by hand can also be learned by the implemented EM algorithm without
 any labeled training data.  All three algorithms are contained in the
-<a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class in this module.</p>
+<a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class in this module.</p>
 <p>In order to apply the Kalman Smoother, one need only specify the size of the
 state and observation space.  This can be done directly by setting
 <tt class="xref py py-attr docutils literal"><span class="pre">n_dim_state</span></tt> or <tt class="xref py py-attr docutils literal"><span class="pre">n_dim_obs</span></tt> or indirectly by specifying an initial
 value for any of the model parameters from which the former can be derived:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">kalman</span> <span class="kn">import</span> <span class="n">KalmanFilter</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pykalman</span> <span class="kn">import</span> <span class="n">KalmanFilter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">KalmanFilter</span><span class="p">(</span><span class="n">initial_state_mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_dim_obs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The traditional Kalman Filter assumes that model parameters are known
-beforehand.  The <a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class however can learn parameters using
-<a class="reference internal" href="#kalman.KalmanFilter.em" title="kalman.KalmanFilter.em"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.em()</span></tt></a> (fitting is optional).  Then the hidden sequence of
-states can be predicted using <a class="reference internal" href="#kalman.KalmanFilter.smooth" title="kalman.KalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.smooth()</span></tt></a>:</p>
+beforehand.  The <a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class however can learn parameters using
+<a class="reference internal" href="#pykalman.KalmanFilter.em" title="pykalman.KalmanFilter.em"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.em()</span></tt></a> (fitting is optional).  Then the hidden sequence of
+states can be predicted using <a class="reference internal" href="#pykalman.KalmanFilter.smooth" title="pykalman.KalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.smooth()</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">measurements</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span><span class="o">.</span><span class="n">em</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span><span class="o">.</span><span class="n">smooth</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]])</span>
 <span class="go">array([[ 0.85819709],</span>
@@ -151,7 +151,7 @@ described in the next section.</p>
 <div class="section" id="choosing-parameters">
 <h4>Choosing Parameters<a class="headerlink" href="#choosing-parameters" title="Permalink to this headline">¶</a></h4>
 <p>Unlike most other algorithms, the Kalman Filter and Kalman Smoother are
-traditionally used with parameters already given. The <a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
+traditionally used with parameters already given. The <a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
 class can thus be initialized with any subset of the usual model parameters and
 used without fitting. Sensible defaults values are given for all unspecified
 parameters (zeros for all 1-dimensional arrays and identity matrices for all
@@ -165,7 +165,7 @@ transition parameters (<tt class="xref py py-attr docutils literal"><span class=
 from which the unobserved states and observed measurements are assumed to be
 sampled from. The following code illustrates in one dimension what this process
 is.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scipy.states</span> <span class="kn">import</span> <span class="n">norm</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">n_dim_state</span><span class="p">))</span>
 <span class="n">measurements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">n_dim_obs</span><span class="p">))</span>
@@ -190,7 +190,7 @@ is.</p>
 </pre></div>
 </div>
 <p>The selection of these variables is not an easy one, and, as shall be explained
-in the section on fitting, should not be left to <a class="reference internal" href="#kalman.KalmanFilter.em" title="kalman.KalmanFilter.em"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.em()</span></tt></a>
+in the section on fitting, should not be left to <a class="reference internal" href="#pykalman.KalmanFilter.em" title="pykalman.KalmanFilter.em"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.em()</span></tt></a>
 alone. If one ignores the random noise, the parameters dictate that <em>the next
 state and the current measurement should be an affine function of the current
 state</em>. The additive noise term is then simply a way to deal with unaccounted
@@ -214,12 +214,12 @@ transitions and measurements, respectively.</p>
 </div>
 <div class="section" id="inferring-states">
 <h4>Inferring States<a class="headerlink" href="#inferring-states" title="Permalink to this headline">¶</a></h4>
-<p>The <a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class comes equipped with two algorithms for
+<p>The <a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class comes equipped with two algorithms for
 prediction: the Kalman Filter and the Kalman Smoother. While the former can be
 updated recursively (making it ideal for online state estimation), the latter
 can only be done in batch. These two algorithms are accessible via
-<a class="reference internal" href="#kalman.KalmanFilter.filter" title="kalman.KalmanFilter.filter"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter()</span></tt></a>, <a class="reference internal" href="#kalman.KalmanFilter.filter_update" title="kalman.KalmanFilter.filter_update"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter_update()</span></tt></a>, and
-<a class="reference internal" href="#kalman.KalmanFilter.smooth" title="kalman.KalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.smooth()</span></tt></a>.</p>
+<a class="reference internal" href="#pykalman.KalmanFilter.filter" title="pykalman.KalmanFilter.filter"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter()</span></tt></a>, <a class="reference internal" href="#pykalman.KalmanFilter.filter_update" title="pykalman.KalmanFilter.filter_update"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter_update()</span></tt></a>, and
+<a class="reference internal" href="#pykalman.KalmanFilter.smooth" title="pykalman.KalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.smooth()</span></tt></a>.</p>
 <p>Functionally, Kalman Smoother should always be preferred. Unlike the Kalman
 Filter, the Smoother is able to incorporate &#8220;future&#8221; measurements as well as
 past ones at the same computational cost of <img class="math" src="_images/math/77e9ea2c9bbe43c55f59ad878ce5701eaf47594c.png" alt="O(Td^3)"/> where <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is
@@ -251,7 +251,7 @@ vary with time.  In order to use this, one need only pass in an array
 </div>
 <div class="section" id="optimizing-parameters">
 <h4>Optimizing Parameters<a class="headerlink" href="#optimizing-parameters" title="Permalink to this headline">¶</a></h4>
-<p>In addition to the Kalman Filter and Kalman Smoother, the <a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
+<p>In addition to the Kalman Filter and Kalman Smoother, the <a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
 class implements the Expectation-Maximization algorithm. This iterative
 algorithm is a way to maximize the likelihood of the observed measurements
 (recall the probabilistic model induced by the model parameters), which is
@@ -262,8 +262,8 @@ optimal value. Thus it is important to select good initial parameter values.</p>
 regularization, meaning that parameter values may diverge to infinity in order
 to make the measurements more likely. Thus it is important to choose <em>which</em>
 parameters to optimize via the <tt class="xref py py-attr docutils literal"><span class="pre">em_vars</span></tt> parameter of
-<a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>.  For example, in order to only optimize the transition
-and observation covariance matrices, one may instantiate <a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
+<a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>.  For example, in order to only optimize the transition
+and observation covariance matrices, one may instantiate <a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
 like so:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">KalmanFilter</span><span class="p">(</span><span class="n">em_vars</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;transition_covariance&#39;</span><span class="p">,</span> <span class="s">&#39;observation_covariance&#39;</span><span class="p">])</span>
 </pre></div>
@@ -314,7 +314,7 @@ measurement at the missing time step:</p>
 <p>In order to understand when the algorithms in this module will be effective, it
 is important to understand what assumptions are being made.  To make notation
 concise,  we refer to the hidden states as <img class="math" src="_images/math/4485828f5a19c01ef573976d83d057fa840ed1e3.png" alt="x_t"/>, the measurements as
-<img class="math" src="_images/math/b765f0ca971f172e2f7db7e9a87d8601379b694d.png" alt="z_t"/>, and the parameters of the <a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class as follows,</p>
+<img class="math" src="_images/math/b765f0ca971f172e2f7db7e9a87d8601379b694d.png" alt="z_t"/>, and the parameters of the <a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class as follows,</p>
 <blockquote>
 <div><table border="1" class="docutils">
 <colgroup>
@@ -401,10 +401,10 @@ Linear Dynamical Systems.&#8221;
 <div class="section" id="class-reference">
 <h2>Class Reference<a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="kalmanfilter">
-<h3><a class="reference internal" href="#kalman.KalmanFilter" title="kalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a><a class="headerlink" href="#kalmanfilter" title="Permalink to this headline">¶</a></h3>
+<h3><a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a><a class="headerlink" href="#kalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="kalman.KalmanFilter">
-<em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">KalmanFilter</tt><big>(</big><em>transition_matrices=None, observation_matrices=None, transition_covariance=None, observation_covariance=None, transition_offsets=None, observation_offsets=None, initial_state_mean=None, initial_state_covariance=None, random_state=None, em_vars=['transition_covariance', 'observation_covariance', 'initial_state_mean', 'initial_state_covariance'], n_dim_state=None, n_dim_obs=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.KalmanFilter">
+<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">KalmanFilter</tt><big>(</big><em>transition_matrices=None, observation_matrices=None, transition_covariance=None, observation_covariance=None, transition_offsets=None, observation_offsets=None, initial_state_mean=None, initial_state_covariance=None, random_state=None, em_vars=['transition_covariance', 'observation_covariance', 'initial_state_mean', 'initial_state_covariance'], n_dim_state=None, n_dim_obs=None</em><big>)</big><a class="headerlink" href="#pykalman.KalmanFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the Kalman Filter, Kalman Smoother, and EM algorithm.</p>
 <p>This class implements the Kalman Filter, Kalman Smoother, and EM Algorithm
 for a Linear Gaussian model specified by,</p>
@@ -428,9 +428,9 @@ represented exactly as Gaussian distributions with mean
 <p><img src="_images/math/cc1644290606e37e33de53fea3314f53554963b0.png" alt="P(x_{0:T-1} | z_{0:T-1}, \theta_i)"/></p>
 </div><p>then by maximizing,</p>
 <div class="math">
-<p><img src="_images/math/1cdba913501d3085ed8e4d09cb84f70d2bfa2ad1.png" alt="\theta_{i+1} = \arg\max_{\theta}
+<p><img src="_images/math/f082e2288c736f7cb5f37186d1fb6084876311d8.png" alt="\theta_{i+1} = \arg\max_{\theta}
     \mathbb{E}_{x_{0:T-1}} [
-        L(x_{0:t}, \theta)| z_{0:T-1}, \theta_i
+        L(x_{0:T-1}, \theta)| z_{0:T-1}, \theta_i
     ]"/></p>
 </div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -508,29 +508,29 @@ do not specify initial values for <cite>observation_matrices</cite>,
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.KalmanFilter.em" title="kalman.KalmanFilter.em"><tt class="xref py py-obj docutils literal"><span class="pre">em</span></tt></a>(X[,&nbsp;y,&nbsp;n_iter,&nbsp;em_vars])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pykalman.KalmanFilter.em" title="pykalman.KalmanFilter.em"><tt class="xref py py-obj docutils literal"><span class="pre">em</span></tt></a>(X[,&nbsp;y,&nbsp;n_iter,&nbsp;em_vars])</td>
 <td>Apply the EM algorithm</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#kalman.KalmanFilter.filter" title="kalman.KalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pykalman.KalmanFilter.filter" title="pykalman.KalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(X)</td>
 <td>Apply the Kalman Filter</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.KalmanFilter.filter_update" title="kalman.KalmanFilter.filter_update"><tt class="xref py py-obj docutils literal"><span class="pre">filter_update</span></tt></a>(filtered_state_mean,&nbsp;...[,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pykalman.KalmanFilter.filter_update" title="pykalman.KalmanFilter.filter_update"><tt class="xref py py-obj docutils literal"><span class="pre">filter_update</span></tt></a>(filtered_state_mean,&nbsp;...[,&nbsp;...])</td>
 <td>Update a Kalman Filter state estimate</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#kalman.KalmanFilter.loglikelihood" title="kalman.KalmanFilter.loglikelihood"><tt class="xref py py-obj docutils literal"><span class="pre">loglikelihood</span></tt></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pykalman.KalmanFilter.loglikelihood" title="pykalman.KalmanFilter.loglikelihood"><tt class="xref py py-obj docutils literal"><span class="pre">loglikelihood</span></tt></a>(X)</td>
 <td>Calculate the log likelihood of all observations</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.KalmanFilter.sample" title="kalman.KalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(n_timesteps[,&nbsp;initial_state,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pykalman.KalmanFilter.sample" title="pykalman.KalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(n_timesteps[,&nbsp;initial_state,&nbsp;...])</td>
 <td>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in length.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#kalman.KalmanFilter.smooth" title="kalman.KalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pykalman.KalmanFilter.smooth" title="pykalman.KalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(X)</td>
 <td>Apply the Kalman Smoother</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="kalman.KalmanFilter.em">
-<tt class="descname">em</tt><big>(</big><em>X</em>, <em>y=None</em>, <em>n_iter=10</em>, <em>em_vars=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.em" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.KalmanFilter.em">
+<tt class="descname">em</tt><big>(</big><em>X</em>, <em>y=None</em>, <em>n_iter=10</em>, <em>em_vars=None</em><big>)</big><a class="headerlink" href="#pykalman.KalmanFilter.em" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the EM algorithm</p>
 <p>Apply the EM algorithm to estimate all parameters specified by
 <cite>em_vars</cite>.  Note that all variables estimated are assumed to be
@@ -561,15 +561,15 @@ left untouched.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.KalmanFilter.filter">
-<tt class="descname">filter</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.KalmanFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#pykalman.KalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the Kalman Filter</p>
 <p>Apply the Kalman Filter to estimate the hidden state at time <img class="math" src="_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/>
 for <img class="math" src="_images/math/6f7b86ed150ff57b9ae1aaebaaedb1fd871a134f.png" alt="t = [0...n_{\text{timesteps}}-1]"/> given observations up to
 and including time <cite>t</cite>.  Observations are assumed to correspond to
 times <img class="math" src="_images/math/01e323847af3dc5620c7d16eb6d1c949c4e54bf9.png" alt="[0...n_{\text{timesteps}}-1]"/>.  The output of this method
 corresponding to time <img class="math" src="_images/math/886203f0d63798f1e50acd1c1162d0a89aa55e85.png" alt="n_{\text{timesteps}}-1"/> can be used in
-<a class="reference internal" href="#kalman.KalmanFilter.filter_update" title="kalman.KalmanFilter.filter_update"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter_update()</span></tt></a> for online updating.</p>
+<a class="reference internal" href="#pykalman.KalmanFilter.filter_update" title="pykalman.KalmanFilter.filter_update"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter_update()</span></tt></a> for online updating.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -600,8 +600,8 @@ current time step</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.KalmanFilter.filter_update">
-<tt class="descname">filter_update</tt><big>(</big><em>filtered_state_mean</em>, <em>filtered_state_covariance</em>, <em>observation=None</em>, <em>transition_matrix=None</em>, <em>transition_offset=None</em>, <em>transition_covariance=None</em>, <em>observation_matrix=None</em>, <em>observation_offset=None</em>, <em>observation_covariance=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.filter_update" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.KalmanFilter.filter_update">
+<tt class="descname">filter_update</tt><big>(</big><em>filtered_state_mean</em>, <em>filtered_state_covariance</em>, <em>observation=None</em>, <em>transition_matrix=None</em>, <em>transition_offset=None</em>, <em>transition_covariance=None</em>, <em>observation_matrix=None</em>, <em>observation_offset=None</em>, <em>observation_covariance=None</em><big>)</big><a class="headerlink" href="#pykalman.KalmanFilter.filter_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a Kalman Filter state estimate</p>
 <p>Perform a one-step update to estimate the state at time <img class="math" src="_images/math/6698e583d6d03ec099c12e35add2e895252c49dd.png" alt="t+1"/>
 give an observation at time <img class="math" src="_images/math/6698e583d6d03ec099c12e35add2e895252c49dd.png" alt="t+1"/> and the previous estimate for
@@ -677,8 +677,8 @@ from times [1...t+1]</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.KalmanFilter.loglikelihood">
-<tt class="descname">loglikelihood</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.loglikelihood" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.KalmanFilter.loglikelihood">
+<tt class="descname">loglikelihood</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#pykalman.KalmanFilter.loglikelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the log likelihood of all observations</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -701,8 +701,8 @@ from times [1...t+1]</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.KalmanFilter.sample">
-<tt class="descname">sample</tt><big>(</big><em>n_timesteps</em>, <em>initial_state=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.KalmanFilter.sample">
+<tt class="descname">sample</tt><big>(</big><em>n_timesteps</em>, <em>initial_state=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.KalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a state sequence <img class="math" src="_images/math/793b0b50c62c31323d367d0cc7300197ca80f280.png" alt="n_{\text{timesteps}}"/> timesteps in
 length.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -730,8 +730,8 @@ length.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.KalmanFilter.smooth">
-<tt class="descname">smooth</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#kalman.KalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.KalmanFilter.smooth">
+<tt class="descname">smooth</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#pykalman.KalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the Kalman Smoother</p>
 <p>Apply the Kalman Smoother to estimate the hidden state at time
 <img class="math" src="_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> for <img class="math" src="_images/math/6f7b86ed150ff57b9ae1aaebaaedb1fd871a134f.png" alt="t = [0...n_{\text{timesteps}}-1]"/> given all
@@ -768,10 +768,10 @@ given all observations</p>
 
 </div>
 <div class="section" id="unscentedkalmanfilter">
-<h3><a class="reference internal" href="#kalman.UnscentedKalmanFilter" title="kalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#unscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
+<h3><a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#unscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="kalman.UnscentedKalmanFilter">
-<em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.UnscentedKalmanFilter">
+<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the General (aka Augmented) Unscented Kalman Filter governed
 by the following equations,</p>
 <div class="math">
@@ -783,11 +783,11 @@ z_{t}     &amp;= g_t(x_t, w_t)"/></p>
 the observation equation are both normally distributed, any non-linear
 transformation may be applied afterwards.  This allows for greater
 generality, but at the expense of computational complexity.  The complexity
-of <a class="reference internal" href="#kalman.UnscentedKalmanFilter.filter" title="kalman.UnscentedKalmanFilter.filter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter.filter()</span></tt></a> is <img class="math" src="_images/math/a0004a7528f43bef140dbe75b2ef3c4c8d595cdd.png" alt="O(T(2n+m)^3)"/>
+of <a class="reference internal" href="#pykalman.UnscentedKalmanFilter.filter" title="pykalman.UnscentedKalmanFilter.filter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter.filter()</span></tt></a> is <img class="math" src="_images/math/a0004a7528f43bef140dbe75b2ef3c4c8d595cdd.png" alt="O(T(2n+m)^3)"/>
 where <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the number of time steps, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the size of the
 state space, and <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is the size of the observation space.</p>
 <p>If your noise is simply additive, consider using the
-<a class="reference internal" href="#kalman.AdditiveUnscentedKalmanFilter" title="kalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a></p>
+<a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -833,20 +833,20 @@ produces the observation at time t.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.UnscentedKalmanFilter.filter" title="kalman.UnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pykalman.UnscentedKalmanFilter.filter" title="pykalman.UnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Filter</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#kalman.UnscentedKalmanFilter.sample" title="kalman.UnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pykalman.UnscentedKalmanFilter.sample" title="pykalman.UnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
 <td>Sample from model defined by the Unscented Kalman Filter</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.UnscentedKalmanFilter.smooth" title="kalman.UnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pykalman.UnscentedKalmanFilter.smooth" title="pykalman.UnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Smoother</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="kalman.UnscentedKalmanFilter.filter">
-<tt class="descname">filter</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.UnscentedKalmanFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -877,8 +877,8 @@ observations from times [0, t]</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.UnscentedKalmanFilter.sample">
-<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.UnscentedKalmanFilter.sample">
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample from model defined by the Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -900,8 +900,8 @@ distribution.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.UnscentedKalmanFilter.smooth">
-<tt class="descname">smooth</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.UnscentedKalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.UnscentedKalmanFilter.smooth">
+<tt class="descname">smooth</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Unscented Kalman Smoother</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -935,10 +935,10 @@ observations from times [0, T-1]</p>
 
 </div>
 <div class="section" id="additiveunscentedkalmanfilter">
-<h3><a class="reference internal" href="#kalman.AdditiveUnscentedKalmanFilter" title="kalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#additiveunscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
+<h3><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#additiveunscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="kalman.AdditiveUnscentedKalmanFilter">
-<em class="property">class </em><tt class="descclassname">kalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.AdditiveUnscentedKalmanFilter">
+<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the Unscented Kalman Filter with additive noise.
 Observations are assumed to be generated from the following process,</p>
 <div class="math">
@@ -995,20 +995,20 @@ at time t</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.AdditiveUnscentedKalmanFilter.filter" title="kalman.AdditiveUnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter.filter" title="pykalman.AdditiveUnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Filter</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#kalman.AdditiveUnscentedKalmanFilter.sample" title="kalman.AdditiveUnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="pykalman.AdditiveUnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
 <td>Sample from model defined by the Unscented Kalman Filter</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#kalman.AdditiveUnscentedKalmanFilter.smooth" title="kalman.AdditiveUnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter.smooth" title="pykalman.AdditiveUnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Smoother</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="kalman.AdditiveUnscentedKalmanFilter.filter">
-<tt class="descname">filter</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.AdditiveUnscentedKalmanFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1039,8 +1039,8 @@ observations from times [0, t]</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.AdditiveUnscentedKalmanFilter.sample">
-<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.AdditiveUnscentedKalmanFilter.sample">
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample from model defined by the Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1062,8 +1062,8 @@ distribution.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="kalman.AdditiveUnscentedKalmanFilter.smooth">
-<tt class="descname">smooth</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#kalman.AdditiveUnscentedKalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
+<dt id="pykalman.AdditiveUnscentedKalmanFilter.smooth">
+<tt class="descname">smooth</tt><big>(</big><em>Z</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter.smooth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Unscented Kalman Smoother</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1107,7 +1107,7 @@ observations from times [0, T-1]</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Kalman Filter</a><ul>
+<li><a class="reference internal" href="#">pykalman</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#user-s-guide">User&#8217;s Guide</a><ul>
 <li><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
@@ -1164,7 +1164,7 @@ observations from times [0, T-1]</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="#">kalman 0.9.0 documentation</a> &raquo;</li> 
+        <li><a href="#">pykalman 0.9.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
