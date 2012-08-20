@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pykalman &mdash; pykalman 0.9.0 documentation</title>
+    <title>pykalman &mdash; pykalman 0.9.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9.0',
+        VERSION:     '0.9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="pykalman 0.9.0 documentation" href="#" /> 
+    <link rel="top" title="pykalman 0.9.1 documentation" href="#" /> 
   </head>
   <body>
     <div class="related">
@@ -34,7 +34,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="#">pykalman 0.9.0 documentation</a> &raquo;</li> 
+        <li><a href="#">pykalman 0.9.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -65,7 +65,10 @@
 </pre></div>
 </div>
 <p>And for the non-linear dynamics via the <tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">I</span><span class="s">&#39;ll fill this in someday...</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pykalman</span> <span class="kn">import</span> <span class="n">UnscentedKalmanFilter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ukf</span> <span class="o">=</span> <span class="n">UnscentedKalmanFilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">v</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">filtered_state_means</span><span class="p">,</span> <span class="n">filtered_state_covariances</span><span class="p">)</span> <span class="o">=</span> <span class="n">ukf</span><span class="o">.</span><span class="n">filter</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">smoothed_state_means</span><span class="p">,</span> <span class="n">smoothed_state_covariances</span><span class="p">)</span> <span class="o">=</span> <span class="n">ukf</span><span class="o">.</span><span class="n">smooth</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="section" id="installation">
@@ -90,8 +93,8 @@ $ cd pykalman
 $ sudo python setup.py install</pre>
 </div>
 </div>
-<div class="section" id="user-s-guide">
-<h2>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="kalman-filter-user-s-guide">
+<h2>Kalman Filter User&#8217;s Guide<a class="headerlink" href="#kalman-filter-user-s-guide" title="Permalink to this headline">¶</a></h2>
 <p>The Kalman Filter is a unsupervised algorithm for tracking a single object in a
 continuous state space.  Given a sequence of noisy measurements, the Kalman
 Filter is able to recover the &#8220;true state&#8221; of the underling object being
@@ -132,7 +135,7 @@ beforehand.  The <a class="reference internal" href="#pykalman.KalmanFilter" tit
 <a class="reference internal" href="#pykalman.KalmanFilter.em" title="pykalman.KalmanFilter.em"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.em()</span></tt></a> (fitting is optional).  Then the hidden sequence of
 states can be predicted using <a class="reference internal" href="#pykalman.KalmanFilter.smooth" title="pykalman.KalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.smooth()</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">measurements</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span><span class="o">.</span><span class="n">em</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span><span class="o">.</span><span class="n">smooth</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span><span class="o">.</span><span class="n">em</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span><span class="o">.</span><span class="n">smooth</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">array([[ 0.85819709],</span>
 <span class="go">       [ 1.77811829],</span>
 <span class="go">       [ 2.19537816]])</span>
@@ -202,14 +205,20 @@ equation:</p>
 <div class="highlight-python"><pre>position[t+dt] = position[t] + velocity[t] dt + 0.5 acceleration[t] dt^2</pre>
 </div>
 <p>Taking the zeroth, first, and second derivative of the above equation with
-respect to <cite>dt</cite> gives the rows of transition matrix. We may also set the
-transition offset to zero for the position and velocity components and -9.8
-for the acceleration component in order to account for gravity&#8217;s pull.</p>
+respect to <cite>dt</cite> gives the rows of transition matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">)],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>            <span class="n">t</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>            <span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>We may also set the transition offset to zero for the position and velocity
+components and -9.8 for the acceleration component in order to account for
+gravity&#8217;s pull.</p>
 <p>It is often very difficult to guess what appropriate values are for for the
 transition and observation covariance, so it is common to use some constant
 multiplied by the identity matrix. Increasing this constant is equivalent to
 saying you believe there is more noise in the system. This constant is the
-amount of variance you expect to see along each dimensiona during state
+amount of variance you expect to see along each dimension during state
 transitions and measurements, respectively.</p>
 </div>
 <div class="section" id="inferring-states">
@@ -395,6 +404,185 @@ Linear Dynamical Systems.&#8221;
 <li>Welling, Max. &#8220;The Kalman Filter&#8221;.
 <a class="reference external" href="http://www.cs.toronto.edu/~welling/classnotes/papers_class/KF.ps.gz">http://www.cs.toronto.edu/~welling/classnotes/papers_class/KF.ps.gz</a></li>
 </ul>
+</div>
+</div>
+</div>
+<div class="section" id="unscented-kalman-filter-user-s-guide">
+<h2>Unscented Kalman Filter User&#8217;s Guide<a class="headerlink" href="#unscented-kalman-filter-user-s-guide" title="Permalink to this headline">¶</a></h2>
+<p>Like the Kalman Filter, the Unscented Kalman Filter is an unsupervised
+algorithm for tracking a single target in a continuous state space. The
+difference is that while the Kalman Filter restricts dynamics to affine
+functions, the Unscented Kalman Filter is designed to operate under arbitrary
+dynamics.</p>
+<p>The advantages of the Unscented Kalman Filter implemented here are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Ability to handle non-affine state transition and observation functions</li>
+<li>Ability to handle not-quite-Gaussian noise models</li>
+<li>Same computational complexity as the standard Kalman Filter</li>
+</ul>
+</div></blockquote>
+<p>The disadvantages are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>No method for learning parameters</li>
+<li>Lack of theoretical guarantees on performance</li>
+<li>Inability to handle extremely non-Gaussian noise</li>
+</ul>
+</div></blockquote>
+<div class="section" id="id3">
+<h3>Basic Usage<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Like <a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>, two methods are provided in
+<a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> for tracking targets:
+<a class="reference internal" href="#pykalman.UnscentedKalmanFilter.filter" title="pykalman.UnscentedKalmanFilter.filter"><tt class="xref py py-func docutils literal"><span class="pre">UnscentedKalmanFilter.filter()</span></tt></a> and <a class="reference internal" href="#pykalman.UnscentedKalmanFilter.smooth" title="pykalman.UnscentedKalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">UnscentedKalmanFilter.smooth()</span></tt></a>.
+At this point no algorithms have been implemented for inferring parameters, so
+they must be specified by hand at instantiation.</p>
+<p>In order to apply these algorithms, one must specify a subset of the following,</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="46%" />
+<col width="30%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Variable Name</td>
+<td>Interpretation</td>
+<td>Default</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">f</span></tt></td>
+<td>state transition function(s)</td>
+<td>state plus noise</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">g</span></tt></td>
+<td>observation function(s)</td>
+<td>state plus noise</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">Q</span></tt></td>
+<td>state transition covariance</td>
+<td>identity</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">R</span></tt></td>
+<td>observation covariance</td>
+<td>identity</td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">mu_0</span></tt></td>
+<td>initial state mean</td>
+<td>zero</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">sigma_0</span></tt></td>
+<td>initial state covariance</td>
+<td>identity</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>If parameters are left unspecified, they will be replaced by their defaults.
+One also has the option of simply specifying <tt class="xref py py-attr docutils literal"><span class="pre">n_dim_state</span></tt> or
+<tt class="xref py py-attr docutils literal"><span class="pre">n_dim_obs</span></tt> if the size of the state or observation space cannot be
+inferred directly.</p>
+<p>The state transition function and observation function have replaced the
+transition matrix/offset and observation matrix/offset from the original
+<a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>, respectively. Both must take in the current state and
+some Gaussian-sampled noise and return the next state/current observation. For
+example, if noise were multiplicative instead of additive, the following would
+be valid:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">current_state</span><span class="p">,</span> <span class="n">transition_noise</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">current_state</span> <span class="o">*</span> <span class="n">transition_noise</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">current_state</span><span class="p">,</span> <span class="n">observation_noise</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">current_state</span> <span class="o">*</span> <span class="n">observation_noise</span>
+</pre></div>
+</div>
+<p>Once defined, the <a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> can be used to extract
+estimated state and covariance matrices over the hidden state:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pykalman</span> <span class="kn">import</span> <span class="n">UnscentedKalmanFilter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">noise</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">state</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">noise</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">state</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ukf</span> <span class="o">=</span> <span class="n">UnscentedKalmanFilter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ukf</span><span class="o">.</span><span class="n">smooth</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">array([[-0.94034641],</span>
+<span class="go">       [ 0.05002316],</span>
+<span class="go">       [ 1.04502498]])</span>
+</pre></div>
+</div>
+<p>If the <a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> is instantiated with an array of
+functions for <tt class="xref py py-attr docutils literal"><span class="pre">f</span></tt> or <tt class="xref py py-attr docutils literal"><span class="pre">g</span></tt>, then the function is assumed to vary with
+time. Currently there is no support for time-varying covariance matrices.</p>
+<div class="section" id="which-unscented-kalman-filter-is-for-me">
+<h4>Which Unscented Kalman Filter is for Me?<a class="headerlink" href="#which-unscented-kalman-filter-is-for-me" title="Permalink to this headline">¶</a></h4>
+<p>Though only <a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> was mentioned in the previous
+section, there exists another class specifically designed for the case when
+noise is additive, <a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a>. While more
+restrictive, this class offers reduced computational complexity
+(<img class="math" src="_images/math/2c2c6395ae022d7e6ac9bc6af9b7969e619ca9c7.png" alt="O(Tn^3)"/> vs. math:<cite>O(T(2n+m)^3)</cite> for state space with dimensionality
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, observation space with dimensionality <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>) and better
+numerical stability. When at all possible, the
+<a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a> should be preferred to its counterpart.</p>
+<p>To reflect the restriction on how noise is integrated, the
+<a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a> uses state transition and observation
+functions with slightly different arguments:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">current_state</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">current_state</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Notice that the transition/observation noise is no longer an argument. Its
+effect will be taken care of at later points in the algorithm without any need
+for your explicit input.</p>
+<p>Finally, users should note that the <a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> can
+potentially suffer from collapse of the covariance matrix to zero.
+Algorithmically, this means that the UnscentedKalmanFilter is one hundred
+percent sure of the state and that no noise is left in the system. In order to
+avoid this, one must ensure that even for small amounts of noise, <tt class="xref py py-attr docutils literal"><span class="pre">f</span></tt> and
+<tt class="xref py py-attr docutils literal"><span class="pre">g</span></tt> output different values for the same current state.</p>
+</div>
+<div class="section" id="id4">
+<h4>Choosing Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>The majority of advice on choosing parameters in Kalman Filter section apply to
+the Unscented Kalman Filter except that there is no method for learning
+parameters and the following code snippet defines the probabilistic model the
+Unscented Kalman Filter (approximately) solves,</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">n_dim_state</span><span class="p">))</span>
+<span class="n">measurements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">n_dim_obs</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_timesteps</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">mu_0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma_0</span><span class="p">))</span>
+      <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+          <span class="n">observation_function</span><span class="p">(</span>
+              <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">],</span>
+              <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
+          <span class="p">)</span>
+      <span class="p">)</span>
+  <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="n">transition_function</span><span class="p">(</span>
+          <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">],</span>
+          <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span>
+      <span class="p">)</span>
+  <span class="p">)</span>
+  <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="n">observation_function</span><span class="p">(</span>
+          <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+          <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
+      <span class="p">)</span>
+  <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h4>Missing Measurements<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> and <a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a>
+have the same support for missing measurements that the original
+<a class="reference internal" href="#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class supports. Usage is precisely the same.</p>
 </div>
 </div>
 </div>
@@ -771,7 +959,7 @@ given all observations</p>
 <h3><a class="reference internal" href="#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#unscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pykalman.UnscentedKalmanFilter">
-<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f=None</em>, <em>g=None</em>, <em>Q=None</em>, <em>R=None</em>, <em>mu_0=None</em>, <em>sigma_0=None</em>, <em>n_dim_state=None</em>, <em>n_dim_obs=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the General (aka Augmented) Unscented Kalman Filter governed
 by the following equations,</p>
 <div class="math">
@@ -818,6 +1006,16 @@ produces the observation at time t.</p>
 <blockquote>
 <div><p>covariance of initial state distribution</p>
 </div></blockquote>
+<p><strong>n_dim_state: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the state space. Only meaningful when you do not
+specify initial values for <cite>Q</cite>, or <cite>mu_0</cite>, <cite>sigma_0</cite>.</p>
+</div></blockquote>
+<p><strong>n_dim_obs: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the observation space. Only meaningful when you
+do not specify initial values for <cite>R</cite>.</p>
+</div></blockquote>
 <p><strong>random_state</strong> : optional, int or RandomState</p>
 <blockquote class="last">
 <div><p>seed for random sample generation</p>
@@ -836,7 +1034,7 @@ produces the observation at time t.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#pykalman.UnscentedKalmanFilter.filter" title="pykalman.UnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Filter</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pykalman.UnscentedKalmanFilter.sample" title="pykalman.UnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pykalman.UnscentedKalmanFilter.sample" title="pykalman.UnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0,&nbsp;random_state])</td>
 <td>Sample from model defined by the Unscented Kalman Filter</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pykalman.UnscentedKalmanFilter.smooth" title="pykalman.UnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
@@ -878,7 +1076,7 @@ observations from times [0, t]</p>
 
 <dl class="method">
 <dt id="pykalman.UnscentedKalmanFilter.sample">
-<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample from model defined by the Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -938,7 +1136,7 @@ observations from times [0, T-1]</p>
 <h3><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#additiveunscentedkalmanfilter" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pykalman.AdditiveUnscentedKalmanFilter">
-<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f=None</em>, <em>g=None</em>, <em>Q=None</em>, <em>R=None</em>, <em>mu_0=None</em>, <em>sigma_0=None</em>, <em>n_dim_state=None</em>, <em>n_dim_obs=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the Unscented Kalman Filter with additive noise.
 Observations are assumed to be generated from the following process,</p>
 <div class="math">
@@ -980,6 +1178,16 @@ at time t</p>
 <blockquote>
 <div><p>covariance of initial state distribution</p>
 </div></blockquote>
+<p><strong>n_dim_state: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the state space. Only meaningful when you do not
+specify initial values for <cite>Q</cite>, or <cite>mu_0</cite>, <cite>sigma_0</cite>.</p>
+</div></blockquote>
+<p><strong>n_dim_obs: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the observation space. Only meaningful when you
+do not specify initial values for <cite>R</cite>.</p>
+</div></blockquote>
 <p><strong>random_state</strong> : optional, int or RandomState</p>
 <blockquote class="last">
 <div><p>seed for random sample generation</p>
@@ -998,7 +1206,7 @@ at time t</p>
 <tr class="row-odd"><td><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter.filter" title="pykalman.AdditiveUnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Filter</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="pykalman.AdditiveUnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="pykalman.AdditiveUnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0,&nbsp;random_state])</td>
 <td>Sample from model defined by the Unscented Kalman Filter</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pykalman.AdditiveUnscentedKalmanFilter.smooth" title="pykalman.AdditiveUnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
@@ -1040,7 +1248,7 @@ observations from times [0, t]</p>
 
 <dl class="method">
 <dt id="pykalman.AdditiveUnscentedKalmanFilter.sample">
-<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample from model defined by the Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1109,7 +1317,7 @@ observations from times [0, T-1]</p>
   <ul>
 <li><a class="reference internal" href="#">pykalman</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#user-s-guide">User&#8217;s Guide</a><ul>
+<li><a class="reference internal" href="#kalman-filter-user-s-guide">Kalman Filter User&#8217;s Guide</a><ul>
 <li><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
 <li><a class="reference internal" href="#choosing-parameters">Choosing Parameters</a></li>
 <li><a class="reference internal" href="#inferring-states">Inferring States</a></li>
@@ -1118,6 +1326,15 @@ observations from times [0, T-1]</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#mathematical-formulation">Mathematical Formulation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unscented-kalman-filter-user-s-guide">Unscented Kalman Filter User&#8217;s Guide</a><ul>
+<li><a class="reference internal" href="#id3">Basic Usage</a><ul>
+<li><a class="reference internal" href="#which-unscented-kalman-filter-is-for-me">Which Unscented Kalman Filter is for Me?</a></li>
+<li><a class="reference internal" href="#id4">Choosing Parameters</a></li>
+<li><a class="reference internal" href="#id5">Missing Measurements</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#class-reference">Class Reference</a><ul>
@@ -1164,7 +1381,7 @@ observations from times [0, T-1]</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="#">pykalman 0.9.0 documentation</a> &raquo;</li> 
+        <li><a href="#">pykalman 0.9.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

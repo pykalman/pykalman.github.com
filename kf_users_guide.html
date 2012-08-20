@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basic Usage &mdash; pykalman 0.9.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pykalman 0.9.1 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">pykalman 0.9.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <p>The Kalman Filter is a unsupervised algorithm for tracking a single object in a
+continuous state space.  Given a sequence of noisy measurements, the Kalman
+Filter is able to recover the &#8220;true state&#8221; of the underling object being
+tracked. Common uses for the Kalman Filter include radar and sonar tracking and
+state estimation in robotics.</p>
+<p>The advantages of Kalman Filter are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>No need to provide labeled training data</li>
+<li>Ability to handle noisy observations</li>
+</ul>
+</div></blockquote>
+<p>The disadvantages are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Computational complexity is cubic in the size of the state space</li>
+<li>Parameter optimization is non-convex and can thus only find local optima</li>
+<li>Inability to cope with non-Gaussian noise</li>
+</ul>
+</div></blockquote>
+<div class="section" id="basic-usage">
+<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
+<p>This module implements two algorithms for tracking: the Kalman Filter and
+Kalman Smoother.  In addition, model parameters which are traditionally
+specified by hand can also be learned by the implemented EM algorithm without
+any labeled training data.  All three algorithms are contained in the
+<a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class in this module.</p>
+<p>In order to apply the Kalman Smoother, one need only specify the size of the
+state and observation space.  This can be done directly by setting
+<tt class="xref py py-attr docutils literal"><span class="pre">n_dim_state</span></tt> or <tt class="xref py py-attr docutils literal"><span class="pre">n_dim_obs</span></tt> or indirectly by specifying an initial
+value for any of the model parameters from which the former can be derived:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pykalman</span> <span class="kn">import</span> <span class="n">KalmanFilter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">KalmanFilter</span><span class="p">(</span><span class="n">initial_state_mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_dim_obs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The traditional Kalman Filter assumes that model parameters are known
+beforehand.  The <a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class however can learn parameters using
+<a class="reference internal" href="index.html#pykalman.KalmanFilter.em" title="pykalman.KalmanFilter.em"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.em()</span></tt></a> (fitting is optional).  Then the hidden sequence of
+states can be predicted using <a class="reference internal" href="index.html#pykalman.KalmanFilter.smooth" title="pykalman.KalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.smooth()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">measurements</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span><span class="o">.</span><span class="n">em</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span><span class="o">.</span><span class="n">smooth</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">array([[ 0.85819709],</span>
+<span class="go">       [ 1.77811829],</span>
+<span class="go">       [ 2.19537816]])</span>
+</pre></div>
+</div>
+<p>The Kalman Filter is parameterized by 3 arrays for state transitions, 3 for
+measurements, and 2 more for initial conditions.  Their names and function are
+described in the next section.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><tt class="docutils literal"><span class="pre">examples/standard/plot_sin.py</span></tt></dt>
+<dd>Tracking a sine signal</dd>
+</dl>
+</div>
+<div class="section" id="choosing-parameters">
+<h2>Choosing Parameters<a class="headerlink" href="#choosing-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Unlike most other algorithms, the Kalman Filter and Kalman Smoother are
+traditionally used with parameters already given. The <a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
+class can thus be initialized with any subset of the usual model parameters and
+used without fitting. Sensible defaults values are given for all unspecified
+parameters (zeros for all 1-dimensional arrays and identity matrices for all
+2-dimensional arrays).</p>
+<p>A Kalman Filter/Smoother is fully specified by its initial conditions
+(<tt class="xref py py-attr docutils literal"><span class="pre">initial_state_mean</span></tt> and <tt class="xref py py-attr docutils literal"><span class="pre">initial_state_covariance</span></tt>), its
+transition parameters (<tt class="xref py py-attr docutils literal"><span class="pre">transition_matrices</span></tt>, <tt class="xref py py-attr docutils literal"><span class="pre">transition_offsets</span></tt>,
+<tt class="xref py py-attr docutils literal"><span class="pre">transition_covariance</span></tt>), and its observation parameters
+(<tt class="xref py py-attr docutils literal"><span class="pre">observation_matrices</span></tt>, <tt class="xref py py-attr docutils literal"><span class="pre">observation_offsets</span></tt>,
+<tt class="xref py py-attr docutils literal"><span class="pre">observation_covariance</span></tt>). These parameters define a probabilistic model
+from which the unobserved states and observed measurements are assumed to be
+sampled from. The following code illustrates in one dimension what this process
+is.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">n_dim_state</span><span class="p">))</span>
+<span class="n">measurements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">n_dim_obs</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_timesteps</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">initial_state_mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">initial_state_covariance</span><span class="p">))</span>
+      <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+          <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+          <span class="o">+</span> <span class="n">observation_offsets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+          <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
+      <span class="p">)</span>
+  <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transition_matrices</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+      <span class="o">+</span> <span class="n">transition_offsets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+      <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">transition_covariance</span><span class="p">))</span>
+  <span class="p">)</span>
+  <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">observation_matrices</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+      <span class="o">+</span> <span class="n">observation_offsets</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+      <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
+  <span class="p">)</span>
+</pre></div>
+</div>
+<p>The selection of these variables is not an easy one, and, as shall be explained
+in the section on fitting, should not be left to <a class="reference internal" href="index.html#pykalman.KalmanFilter.em" title="pykalman.KalmanFilter.em"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.em()</span></tt></a>
+alone. If one ignores the random noise, the parameters dictate that <em>the next
+state and the current measurement should be an affine function of the current
+state</em>. The additive noise term is then simply a way to deal with unaccounted
+error.</p>
+<p>A simple example to illustrate the model parameters is a free falling ball in
+one dimension. The state vector can be represented by the position, velocity,
+and acceleration of the ball, and the transition matrix is defined by the
+equation:</p>
+<div class="highlight-python"><pre>position[t+dt] = position[t] + velocity[t] dt + 0.5 acceleration[t] dt^2</pre>
+</div>
+<p>Taking the zeroth, first, and second derivative of the above equation with
+respect to <cite>dt</cite> gives the rows of transition matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">)],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>            <span class="n">t</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>            <span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>We may also set the transition offset to zero for the position and velocity
+components and -9.8 for the acceleration component in order to account for
+gravity&#8217;s pull.</p>
+<p>It is often very difficult to guess what appropriate values are for for the
+transition and observation covariance, so it is common to use some constant
+multiplied by the identity matrix. Increasing this constant is equivalent to
+saying you believe there is more noise in the system. This constant is the
+amount of variance you expect to see along each dimension during state
+transitions and measurements, respectively.</p>
+</div>
+<div class="section" id="inferring-states">
+<h2>Inferring States<a class="headerlink" href="#inferring-states" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class comes equipped with two algorithms for
+prediction: the Kalman Filter and the Kalman Smoother. While the former can be
+updated recursively (making it ideal for online state estimation), the latter
+can only be done in batch. These two algorithms are accessible via
+<a class="reference internal" href="index.html#pykalman.KalmanFilter.filter" title="pykalman.KalmanFilter.filter"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter()</span></tt></a>, <a class="reference internal" href="index.html#pykalman.KalmanFilter.filter_update" title="pykalman.KalmanFilter.filter_update"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.filter_update()</span></tt></a>, and
+<a class="reference internal" href="index.html#pykalman.KalmanFilter.smooth" title="pykalman.KalmanFilter.smooth"><tt class="xref py py-func docutils literal"><span class="pre">KalmanFilter.smooth()</span></tt></a>.</p>
+<p>Functionally, Kalman Smoother should always be preferred. Unlike the Kalman
+Filter, the Smoother is able to incorporate &#8220;future&#8221; measurements as well as
+past ones at the same computational cost of <img class="math" src="_images/math/77e9ea2c9bbe43c55f59ad878ce5701eaf47594c.png" alt="O(Td^3)"/> where <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is
+the number of time steps and <cite>d</cite> is the dimensionality of the state space. The
+only reason to prefer the Kalman Filter over the Smoother is in its ability to
+incorporate new measurements in an online manner:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_mean</span><span class="p">,</span> <span class="n">next_covariance</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">filter_update</span><span class="p">(</span>
+<span class="go">    means[-1], covariances[-1], new_measurement</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>Both the Kalman Filter and Kalman Smoother are able to use parameters which
+vary with time.  In order to use this, one need only pass in an array
+<tt class="xref py py-attr docutils literal"><span class="pre">n_timesteps</span></tt> in length along its first axis:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">transition_offsets</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">KalmanFilter</span><span class="p">(</span><span class="n">transition_offsets</span><span class="o">=</span><span class="n">transition_offsets</span><span class="p">,</span> <span class="n">n_dim_obs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><tt class="docutils literal"><span class="pre">examples/standard/plot_online.py</span></tt></dt>
+<dd>Online State Estimation</dd>
+<dt><tt class="docutils literal"><span class="pre">examples/standard/plot_filter.py</span></tt></dt>
+<dd>Filtering and Smoothing</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="optimizing-parameters">
+<h2>Optimizing Parameters<a class="headerlink" href="#optimizing-parameters" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the Kalman Filter and Kalman Smoother, the <a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
+class implements the Expectation-Maximization algorithm. This iterative
+algorithm is a way to maximize the likelihood of the observed measurements
+(recall the probabilistic model induced by the model parameters), which is
+unfortunately a non-convex optimization problem. This means that even when the
+EM algorithm converges, there is no guarantee that it has converged to an
+optimal value. Thus it is important to select good initial parameter values.</p>
+<p>A second consideration when using the EM algorithm is that the algorithm lacks
+regularization, meaning that parameter values may diverge to infinity in order
+to make the measurements more likely. Thus it is important to choose <em>which</em>
+parameters to optimize via the <tt class="xref py py-attr docutils literal"><span class="pre">em_vars</span></tt> parameter of
+<a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>.  For example, in order to only optimize the transition
+and observation covariance matrices, one may instantiate <a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a>
+like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">KalmanFilter</span><span class="p">(</span><span class="n">em_vars</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;transition_covariance&#39;</span><span class="p">,</span> <span class="s">&#39;observation_covariance&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>It is customary optimize only the <tt class="xref py py-attr docutils literal"><span class="pre">transition_covariance</span></tt>,
+<tt class="xref py py-attr docutils literal"><span class="pre">observation_covariance</span></tt>, <tt class="xref py py-attr docutils literal"><span class="pre">initial_state_mean</span></tt>, and
+<tt class="xref py py-attr docutils literal"><span class="pre">initial_state_covariance</span></tt>, which is the default when <tt class="xref py py-attr docutils literal"><span class="pre">em_vars</span></tt> is
+unspecified. In order to avoid overfitting, it is also possible to specify the
+number of iterations of the EM algorithm to run during fitting:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span><span class="o">.</span><span class="n">em</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each iteration of the EM algorithm requires running the Kalman Smoother anew,
+so its computational complexity is <img class="math" src="_images/math/5c2c8b09d6001e11048094aa1d3329335d13af82.png" alt="O(Tnd^3)"/> where <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the
+number of time steps, <cite>n</cite> is the number of iterations, and <cite>d</cite> is the size of
+the state space.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><tt class="docutils literal"><span class="pre">examples/standard/plot_em.py</span></tt></dt>
+<dd>Using the EM Algorithm</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="missing-measurements">
+<h2>Missing Measurements<a class="headerlink" href="#missing-measurements" title="Permalink to this headline">¶</a></h2>
+<p>In real world systems, it is common to have sensors occasionally fail.  The
+Kalman Filter, Kalman Smoother, and EM algorithm are all equipped to handle
+this scenario. To make use of it, one only need apply a NumPy mask to the
+measurement at the missing time step:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ma</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked</span>  <span class="c"># hide measurement at time step 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span><span class="o">.</span><span class="n">em</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><tt class="docutils literal"><span class="pre">examples/standard/plot_missing.py</span></tt></dt>
+<dd>State Estimation with Missing Observations</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="section" id="mathematical-formulation">
+<h1>Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h1>
+<p>In order to understand when the algorithms in this module will be effective, it
+is important to understand what assumptions are being made.  To make notation
+concise,  we refer to the hidden states as <img class="math" src="_images/math/4485828f5a19c01ef573976d83d057fa840ed1e3.png" alt="x_t"/>, the measurements as
+<img class="math" src="_images/math/b765f0ca971f172e2f7db7e9a87d8601379b694d.png" alt="z_t"/>, and the parameters of the <a class="reference internal" href="index.html#pykalman.KalmanFilter" title="pykalman.KalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">KalmanFilter</span></tt></a> class as follows,</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Parameter Name</td>
+<td>Notation</td>
+</tr>
+<tr class="row-even"><td><cite>initial_state_mean</cite></td>
+<td><img class="math" src="_images/math/7548319dd93c27598143e27cd09522e0c727ef4f.png" alt="\mu_0"/></td>
+</tr>
+<tr class="row-odd"><td><cite>initial_state_covariance</cite></td>
+<td><img class="math" src="_images/math/dcb56c9df837b86187e9c66311089e2e08be8308.png" alt="\Sigma_0"/></td>
+</tr>
+<tr class="row-even"><td><cite>transition_matrices</cite></td>
+<td><img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/></td>
+</tr>
+<tr class="row-odd"><td><cite>transition_offsets</cite></td>
+<td><img class="math" src="_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/></td>
+</tr>
+<tr class="row-even"><td><cite>transition_covariance</cite></td>
+<td><img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/></td>
+</tr>
+<tr class="row-odd"><td><cite>observation_matrices</cite></td>
+<td><img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/></td>
+</tr>
+<tr class="row-even"><td><cite>observation_offsets</cite></td>
+<td><img class="math" src="_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/></td>
+</tr>
+<tr class="row-odd"><td><cite>observation_covariance</cite></td>
+<td><img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>In words, the Linear-Gaussian model assumes that for all time steps <img class="math" src="_images/math/6f19c7e63a78dad1620141f9f502d0304be25206.png" alt="t =
+0, \ldots, T-1"/> (here, <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the number of time steps),</p>
+<ul class="simple">
+<li><img class="math" src="_images/math/17f1249ad95b7682b8316ad21de8ce4ee9fdcf93.png" alt="x_0"/> is distributed according to a Gaussian distribution</li>
+<li><img class="math" src="_images/math/a6b9e71b0be39a781fd2c9a222e556af1980d43a.png" alt="x_{t+1}"/> is an affine transformation of <img class="math" src="_images/math/4485828f5a19c01ef573976d83d057fa840ed1e3.png" alt="x_t"/> and additive
+Gaussian noise</li>
+<li><img class="math" src="_images/math/768e49b100713b44862cafb313c32dc47cec6bd6.png" alt="z_{t}"/> is an affine transformation of <img class="math" src="_images/math/63f40b9b3ce334f3b88199e6757727c87ae895d1.png" alt="x_{t}"/> and additive
+Gaussian noise</li>
+</ul>
+<p>These assumptions imply that that <img class="math" src="_images/math/4485828f5a19c01ef573976d83d057fa840ed1e3.png" alt="x_t"/> is always a Gaussian
+distribution, even when <img class="math" src="_images/math/b765f0ca971f172e2f7db7e9a87d8601379b694d.png" alt="z_t"/> is observed.  If this is the case, the
+distribution of <img class="math" src="_images/math/7c68ae5d0baf4bf3428ff734db58a0b5d9b8ed52.png" alt="x_t|z_{1:t}"/> and <img class="math" src="_images/math/ca08676a2d3d785441fee907ed9df94c0b2ace3e.png" alt="x_t | z_{1:T-1}"/> are completely
+specified by the parameters of the Gaussian distribution, namely its <em>mean</em> and
+<em>covariance</em>.  The Kalman Filter and Kalman Smoother calculate these values,
+respectively.</p>
+<p>Formally, the Linear-Gaussian Model assumes that states and measurements are
+generated in the following way,</p>
+<div class="math">
+<p><img src="_images/math/5f313ca97065300a6e54e13b4990272beb0b6336.png" alt="x_0               &amp; \sim \text{Gaussian}(\mu_0, \Sigma_0)   \\
+x_{t+1}           &amp; = A_t x_t + b_t + \epsilon_{t+1}^{1}    \\
+y_{t}             &amp; = C_t x_t + d_t + \epsilon_{t}^2        \\
+\epsilon_t^1      &amp; \sim \text{Gaussian}(0, Q)              \\
+\epsilon_{t}^2    &amp; \sim \text{Gaussian}(0, R)"/></p>
+</div><p>The Gaussian distribution is characterized by its single mode and exponentially
+decreasing tails, meaning that the Kalman Filter and Kalman Smoother work best
+if one is able to guess fairly well the vicinity of the next state given the
+present, but cannot say <em>exactly</em> where it will be.  On the other hand, these
+methods will fail if there are multiple, disconnected areas where the next
+state could be, such as if a car turns one of three ways at an intersection.</p>
+<div class="topic">
+<p class="topic-title first">References:</p>
+<ul class="simple">
+<li>Abbeel, Pieter. &#8220;Maximum Likelihood, EM&#8221;.
+<a class="reference external" href="http://www.cs.berkeley.edu/~pabbeel/cs287-fa11/">http://www.cs.berkeley.edu/~pabbeel/cs287-fa11/</a></li>
+<li>Yu, Byron M. and Shenoy, Krishna V. and Sahani, Maneesh. &#8220;Derivation of
+Kalman Filtering and Smoothing Equations&#8221;.
+<a class="reference external" href="http://www.ece.cmu.edu/~byronyu/papers/derive_ks.pdf">http://www.ece.cmu.edu/~byronyu/papers/derive_ks.pdf</a></li>
+<li>Ghahramani, Zoubin and Hinton, Geoffrey E. &#8220;Parameter Estimation for
+Linear Dynamical Systems.&#8221;
+<a class="reference external" href="http://mlg.eng.cam.ac.uk/zoubin/course04/tr-96-2.pdf">http://mlg.eng.cam.ac.uk/zoubin/course04/tr-96-2.pdf</a></li>
+<li>Welling, Max. &#8220;The Kalman Filter&#8221;.
+<a class="reference external" href="http://www.cs.toronto.edu/~welling/classnotes/papers_class/KF.ps.gz">http://www.cs.toronto.edu/~welling/classnotes/papers_class/KF.ps.gz</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basic Usage</a><ul>
+<li><a class="reference internal" href="#choosing-parameters">Choosing Parameters</a></li>
+<li><a class="reference internal" href="#inferring-states">Inferring States</a></li>
+<li><a class="reference internal" href="#optimizing-parameters">Optimizing Parameters</a></li>
+<li><a class="reference internal" href="#missing-measurements">Missing Measurements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mathematical-formulation">Mathematical Formulation</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/kf_users_guide.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">pykalman 0.9.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Daniel Duckworth.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

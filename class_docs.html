@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>KalmanFilter &mdash; pykalman 0.9.0 documentation</title>
+    <title>KalmanFilter &mdash; pykalman 0.9.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9.0',
+        VERSION:     '0.9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="pykalman 0.9.0 documentation" href="index.html" /> 
+    <link rel="top" title="pykalman 0.9.1 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,7 +34,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="index.html">pykalman 0.9.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pykalman 0.9.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -414,7 +414,7 @@ given all observations</p>
 <h1><a class="reference internal" href="index.html#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#unscentedkalmanfilter" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pykalman.UnscentedKalmanFilter">
-<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">UnscentedKalmanFilter</tt><big>(</big><em>f=None</em>, <em>g=None</em>, <em>Q=None</em>, <em>R=None</em>, <em>mu_0=None</em>, <em>sigma_0=None</em>, <em>n_dim_state=None</em>, <em>n_dim_obs=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the General (aka Augmented) Unscented Kalman Filter governed
 by the following equations,</p>
 <div class="math">
@@ -461,6 +461,16 @@ produces the observation at time t.</p>
 <blockquote>
 <div><p>covariance of initial state distribution</p>
 </div></blockquote>
+<p><strong>n_dim_state: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the state space. Only meaningful when you do not
+specify initial values for <cite>Q</cite>, or <cite>mu_0</cite>, <cite>sigma_0</cite>.</p>
+</div></blockquote>
+<p><strong>n_dim_obs: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the observation space. Only meaningful when you
+do not specify initial values for <cite>R</cite>.</p>
+</div></blockquote>
 <p><strong>random_state</strong> : optional, int or RandomState</p>
 <blockquote class="last">
 <div><p>seed for random sample generation</p>
@@ -479,7 +489,7 @@ produces the observation at time t.</p>
 <tr class="row-odd"><td><a class="reference internal" href="index.html#pykalman.UnscentedKalmanFilter.filter" title="pykalman.UnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Filter</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="index.html#pykalman.UnscentedKalmanFilter.sample" title="pykalman.UnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<tr class="row-even"><td><a class="reference internal" href="index.html#pykalman.UnscentedKalmanFilter.sample" title="pykalman.UnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0,&nbsp;random_state])</td>
 <td>Sample from model defined by the Unscented Kalman Filter</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="index.html#pykalman.UnscentedKalmanFilter.smooth" title="pykalman.UnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
@@ -521,7 +531,7 @@ observations from times [0, t]</p>
 
 <dl class="method">
 <dt id="pykalman.UnscentedKalmanFilter.sample">
-<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.UnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample from model defined by the Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -581,7 +591,7 @@ observations from times [0, T-1]</p>
 <h1><a class="reference internal" href="index.html#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a><a class="headerlink" href="#additiveunscentedkalmanfilter" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pykalman.AdditiveUnscentedKalmanFilter">
-<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f</em>, <em>g</em>, <em>Q</em>, <em>R</em>, <em>mu_0</em>, <em>sigma_0</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pykalman.</tt><tt class="descname">AdditiveUnscentedKalmanFilter</tt><big>(</big><em>f=None</em>, <em>g=None</em>, <em>Q=None</em>, <em>R=None</em>, <em>mu_0=None</em>, <em>sigma_0=None</em>, <em>n_dim_state=None</em>, <em>n_dim_obs=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the Unscented Kalman Filter with additive noise.
 Observations are assumed to be generated from the following process,</p>
 <div class="math">
@@ -623,6 +633,16 @@ at time t</p>
 <blockquote>
 <div><p>covariance of initial state distribution</p>
 </div></blockquote>
+<p><strong>n_dim_state: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the state space. Only meaningful when you do not
+specify initial values for <cite>Q</cite>, or <cite>mu_0</cite>, <cite>sigma_0</cite>.</p>
+</div></blockquote>
+<p><strong>n_dim_obs: optional, integer</strong> :</p>
+<blockquote>
+<div><p>the dimensionality of the observation space. Only meaningful when you
+do not specify initial values for <cite>R</cite>.</p>
+</div></blockquote>
 <p><strong>random_state</strong> : optional, int or RandomState</p>
 <blockquote class="last">
 <div><p>seed for random sample generation</p>
@@ -641,7 +661,7 @@ at time t</p>
 <tr class="row-odd"><td><a class="reference internal" href="index.html#pykalman.AdditiveUnscentedKalmanFilter.filter" title="pykalman.AdditiveUnscentedKalmanFilter.filter"><tt class="xref py py-obj docutils literal"><span class="pre">filter</span></tt></a>(Z)</td>
 <td>Run Unscented Kalman Filter</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="index.html#pykalman.AdditiveUnscentedKalmanFilter.sample" title="pykalman.AdditiveUnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0])</td>
+<tr class="row-even"><td><a class="reference internal" href="index.html#pykalman.AdditiveUnscentedKalmanFilter.sample" title="pykalman.AdditiveUnscentedKalmanFilter.sample"><tt class="xref py py-obj docutils literal"><span class="pre">sample</span></tt></a>(T[,&nbsp;x_0,&nbsp;random_state])</td>
 <td>Sample from model defined by the Unscented Kalman Filter</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="index.html#pykalman.AdditiveUnscentedKalmanFilter.smooth" title="pykalman.AdditiveUnscentedKalmanFilter.smooth"><tt class="xref py py-obj docutils literal"><span class="pre">smooth</span></tt></a>(Z)</td>
@@ -683,7 +703,7 @@ observations from times [0, t]</p>
 
 <dl class="method">
 <dt id="pykalman.AdditiveUnscentedKalmanFilter.sample">
-<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sample</tt><big>(</big><em>T</em>, <em>x_0=None</em>, <em>random_state=None</em><big>)</big><a class="headerlink" href="#pykalman.AdditiveUnscentedKalmanFilter.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample from model defined by the Unscented Kalman Filter</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -787,7 +807,7 @@ observations from times [0, T-1]</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="index.html">pykalman 0.9.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pykalman 0.9.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
