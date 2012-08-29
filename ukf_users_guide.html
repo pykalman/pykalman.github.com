@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Basic Usage &mdash; pykalman 0.9.1 documentation</title>
+    <title>Basic Usage &mdash; pykalman 0.9.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9.1',
+        VERSION:     '0.9.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="pykalman 0.9.1 documentation" href="index.html" /> 
+    <link rel="top" title="pykalman 0.9.2 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,7 +34,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="index.html">pykalman 0.9.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pykalman 0.9.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -75,37 +75,37 @@ they must be specified by hand at instantiation.</p>
 <blockquote>
 <div><table border="1" class="docutils">
 <colgroup>
-<col width="24%" />
-<col width="46%" />
-<col width="30%" />
+<col width="42%" />
+<col width="35%" />
+<col width="23%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Variable Name</td>
-<td>Interpretation</td>
+<td>Mathematical Notation</td>
 <td>Default</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">f</span></tt></td>
-<td>state transition function(s)</td>
+<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">transition_functions</span></tt></td>
+<td><img class="math" src="_images/math/e5538580d61b5be8f4b11818bd8b14a13e175dd8.png" alt="f_t"/></td>
 <td>state plus noise</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">g</span></tt></td>
-<td>observation function(s)</td>
+<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">observation_functions</span></tt></td>
+<td><img class="math" src="_images/math/edf214e41730baf471deb7a20e2ca9cf62808cac.png" alt="g_t"/></td>
 <td>state plus noise</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">Q</span></tt></td>
-<td>state transition covariance</td>
+<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">transition_covariance</span></tt></td>
+<td><img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/></td>
 <td>identity</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">R</span></tt></td>
-<td>observation covariance</td>
+<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">observation_covariance</span></tt></td>
+<td><img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/></td>
 <td>identity</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">mu_0</span></tt></td>
-<td>initial state mean</td>
+<tr class="row-even"><td><tt class="xref py py-attr docutils literal"><span class="pre">initial_state_mean</span></tt></td>
+<td><img class="math" src="_images/math/7548319dd93c27598143e27cd09522e0c727ef4f.png" alt="\mu_0"/></td>
 <td>zero</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">sigma_0</span></tt></td>
-<td>initial state covariance</td>
+<tr class="row-odd"><td><tt class="xref py py-attr docutils literal"><span class="pre">initial_state_covariance</span></tt></td>
+<td><img class="math" src="_images/math/dcb56c9df837b86187e9c66311089e2e08be8308.png" alt="\Sigma_0"/></td>
 <td>identity</td>
 </tr>
 </tbody>
@@ -146,15 +146,16 @@ estimated state and covariance matrices over the hidden state:</p>
 </pre></div>
 </div>
 <p>If the <a class="reference internal" href="index.html#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> is instantiated with an array of
-functions for <tt class="xref py py-attr docutils literal"><span class="pre">f</span></tt> or <tt class="xref py py-attr docutils literal"><span class="pre">g</span></tt>, then the function is assumed to vary with
-time. Currently there is no support for time-varying covariance matrices.</p>
+functions for <tt class="xref py py-attr docutils literal"><span class="pre">transition_functions</span></tt> or <tt class="xref py py-attr docutils literal"><span class="pre">observation_functions</span></tt>,
+then the function is assumed to vary with time. Currently there is no support
+for time-varying covariance matrices.</p>
 <div class="section" id="which-unscented-kalman-filter-is-for-me">
 <h2>Which Unscented Kalman Filter is for Me?<a class="headerlink" href="#which-unscented-kalman-filter-is-for-me" title="Permalink to this headline">¶</a></h2>
 <p>Though only <a class="reference internal" href="index.html#pykalman.UnscentedKalmanFilter" title="pykalman.UnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">UnscentedKalmanFilter</span></tt></a> was mentioned in the previous
 section, there exists another class specifically designed for the case when
 noise is additive, <a class="reference internal" href="index.html#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a>. While more
 restrictive, this class offers reduced computational complexity
-(<img class="math" src="_images/math/2c2c6395ae022d7e6ac9bc6af9b7969e619ca9c7.png" alt="O(Tn^3)"/> vs. math:<cite>O(T(2n+m)^3)</cite> for state space with dimensionality
+(<img class="math" src="_images/math/2c2c6395ae022d7e6ac9bc6af9b7969e619ca9c7.png" alt="O(Tn^3)"/> vs. <img class="math" src="_images/math/a0004a7528f43bef140dbe75b2ef3c4c8d595cdd.png" alt="O(T(2n+m)^3)"/> for state space with dimensionality
 <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, observation space with dimensionality <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>) and better
 numerical stability. When at all possible, the
 <a class="reference internal" href="index.html#pykalman.AdditiveUnscentedKalmanFilter" title="pykalman.AdditiveUnscentedKalmanFilter"><tt class="xref py py-class docutils literal"><span class="pre">AdditiveUnscentedKalmanFilter</span></tt></a> should be preferred to its counterpart.</p>
@@ -175,8 +176,9 @@ for your explicit input.</p>
 potentially suffer from collapse of the covariance matrix to zero.
 Algorithmically, this means that the UnscentedKalmanFilter is one hundred
 percent sure of the state and that no noise is left in the system. In order to
-avoid this, one must ensure that even for small amounts of noise, <tt class="xref py py-attr docutils literal"><span class="pre">f</span></tt> and
-<tt class="xref py py-attr docutils literal"><span class="pre">g</span></tt> output different values for the same current state.</p>
+avoid this, one must ensure that even for small amounts of noise,
+<tt class="xref py py-attr docutils literal"><span class="pre">transition_functions</span></tt> and <tt class="xref py py-attr docutils literal"><span class="pre">observation_functions</span></tt> output different
+values for the same current state.</p>
 </div>
 <div class="section" id="choosing-parameters">
 <h2>Choosing Parameters<a class="headerlink" href="#choosing-parameters" title="Permalink to this headline">¶</a></h2>
@@ -190,23 +192,23 @@ Unscented Kalman Filter (approximately) solves,</p>
 <span class="n">measurements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_timesteps</span><span class="p">,</span> <span class="n">n_dim_obs</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_timesteps</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-      <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">mu_0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma_0</span><span class="p">))</span>
+      <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">initial_state_mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">initial_state_covariance</span><span class="p">))</span>
       <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
           <span class="n">observation_function</span><span class="p">(</span>
               <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">],</span>
-              <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
+              <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
           <span class="p">)</span>
       <span class="p">)</span>
   <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
       <span class="n">transition_function</span><span class="p">(</span>
           <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">],</span>
-          <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span>
+          <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">transition_covariance</span><span class="p">))</span>
       <span class="p">)</span>
   <span class="p">)</span>
   <span class="n">measurements</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
       <span class="n">observation_function</span><span class="p">(</span>
           <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
-          <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
+          <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">observation_covariance</span><span class="p">))</span>
       <span class="p">)</span>
   <span class="p">)</span>
 </pre></div>
@@ -264,7 +266,7 @@ have the same support for missing measurements that the original
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="index.html">pykalman 0.9.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">pykalman 0.9.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
